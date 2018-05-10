@@ -4,13 +4,15 @@
   "description": "Module for clients to select their photo booth options",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit",
     "start": "node server.js"
   },
   "author": "Ryan Meeks",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.3",
+    "faker": "^4.1.0",
+    "mongoose": "^5.1.0",
     "morgan": "^1.9.0"
   },
   "devDependencies": {
