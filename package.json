@@ -1,0 +1,21 @@
+{
+  "name": "photo-booth-module",
+  "version": "1.0.0",
+  "description": "Module for clients to select their photo booth options",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "Ryan Meeks",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.1.1"
+  }
+}
