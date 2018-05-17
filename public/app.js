@@ -17,7 +17,7 @@ PHOTO_BOOTH_TEMPLATE_DATA = {
     }]
 }
 
-
+//----->START callback for photobooth data
 function getTemplateData(callbackFn) {
 
 	setTimeout(function(){callbackFn(PHOTO_BOOTH_TEMPLATE_DATA)}, 1);
@@ -39,8 +39,31 @@ function displayTemplateSelections(data) {
 function getAndDisplayTemplateInfo() {
 	getTemplateData(displayTemplateSelections);
 }
+//--->END Callback for Photo Booth Data
 
 //Page Load
-$(function() {
-	getAndDisplayTemplateInfo();
-})
+//$(getAndDisplayTemplateInfo)
+$(userLogin)
+
+function userLogin() {
+    $('.js-container').html(
+            `<form accept-charset="UTF-8" action="action_page.php" autocomplete="off" method="GET" target="_blank">
+            <fieldset>
+            <legend>Login To Your Event</legend>
+            <label for="email">Email</label>
+            <input email="email" type="text" placeholder="Email"/>
+            <label for="password">Password</label>
+            <input name="password" type="text" placeholder="Password"/> 
+            <button type="submit" value="Submit">Submit</button>
+            </fieldset>
+            <div class="login-footer">
+                <div class="js-signUp">
+                    <p>New User</p>
+                </div>
+                <div class="forgotPassword">
+                    <p>Forgot Password</p>
+                </div>
+            </div>
+        </form>`
+        )
+}
