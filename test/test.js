@@ -12,12 +12,11 @@ chai.use(chaiHttp);
 
 describe('PhotBooth Module API Resource', function(){
     it('should return hello world', function(){
-        let res;
+        
         return chai.request(app)
         .get('')
-        .then(function(_res){
-            res = _res;
+        .then(function(res){
             res.should.have.status(200);
-        })
-    })
-})
+        });
+    });
+});
