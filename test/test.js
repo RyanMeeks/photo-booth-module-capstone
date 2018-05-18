@@ -5,7 +5,7 @@ const chai = require('chai');
 const mongoose = require('mongoose');
 const faker = require('faker');
 const chaiHttp = require('chai-http');
-const { app } = require('../server');
+const app = require('../server');
 const TEST_DATABASE_URL = require('../config');
 const should = chai.should();
 
@@ -15,7 +15,7 @@ describe('PhotBooth Module API Resource', function(){
     it('should provide a login screen', function(){
         
         return chai.request(app)
-        .get('')
+        .get('/')
         .then(function(res){
             res.should.have.status(200);
         });
