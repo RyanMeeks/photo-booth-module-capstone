@@ -12,7 +12,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('PhotBooth Module API Resource', function(){
-    it('should provide a login screen', function(){
+    it('should return something', function(){
         
         return chai.request(app)
         .get('/')
