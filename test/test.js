@@ -6,12 +6,13 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const chaiHttp = require('chai-http');
 const { app } = require('../server');
+const TEST_DATABASE_URL = require('../config');
 const should = chai.should();
 
 chai.use(chaiHttp);
 
 describe('PhotBooth Module API Resource', function(){
-    it('should return hello world', function(){
+    it('should provide a login screen', function(){
         
         return chai.request(app)
         .get('')
