@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const {User} = require('./models');
-
+const router = express.Router();
 const jsonParser = bodyParser.json();
 
 //Post to register a new user
@@ -59,11 +59,11 @@ router.post('/', jsonParser, (req, res) => {
 
     const tooSmallField = Object.keys(sizedFields).find(
         field => 'min' in sizedFields[field] && 
-            req.body[field].trim().length < sizedFields[fields].min);
+            req.body[field].trim().length < sizedFields[field].min);
 
     const tooLargeField = Object.keys(sizedFields).find(
         field => 'max' in sizedFields[field] &&
-            req.body[field].trim().length > sizedFields[fields].max);
+            req.body[field].trim().length > sizedFields[field].max);
     
 
     if (tooSmallField || tooLargeField) {

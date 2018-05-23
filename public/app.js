@@ -1,4 +1,7 @@
-PHOTO_BOOTH_TEMPLATE_DATA = {
+const POSTUSER_URL = "http://localhost:8080/user";
+const USERLOGIN_URL = "http://localhost:8080//api/auth/login";
+
+const PHOTO_BOOTH_TEMPLATE_DATA = {
     "stripTemplates":[
     {
         "template_name":"flowers",
@@ -16,6 +19,7 @@ PHOTO_BOOTH_TEMPLATE_DATA = {
         "images": "4"
     }]
 }
+
 
 //----->START callback for photobooth data
 function getTemplateData(callbackFn) {
@@ -47,14 +51,14 @@ $(userLogin)
 
 function userLogin() {
     $('.js-container').html(
-            `<form accept-charset="UTF-8" action="action_page.php" autocomplete="off" method="GET" target="_blank">
+        `<form>
             <fieldset>
             <legend>Login To Your Event</legend>
             <label for="email">Email</label>
-            <input email="email" type="text" placeholder="Email"/>
+            <input class="js-userName" email="email" type="text" placeholder="Email"/>
             <label for="password">Password</label>
-            <input name="password" type="text" placeholder="Password"/> 
-            <button type="submit" value="Submit">Submit</button>
+            <input class="js-password" name="password" type="text" placeholder="Password"/> 
+            <button type="submit" value="submit">Submit</button>
             </fieldset>
             <div class="login-footer">
                 <div class="js-signUp">
@@ -66,4 +70,38 @@ function userLogin() {
             </div>
         </form>`
         )
+    watchSubmit();
+}
+
+
+function loginEndpoint(username, password, callback) {
+    const settings = {
+        url: `${USERLOGIN_URL}`,
+        datatype: 'json',
+        type: 'GET',
+        success: callback, 
+        error: function(err) {
+            console.log('Input Error');
+        },
+    };
+    $.ajax(settings);
+    console.log(settings);
+}
+
+
+function displayDataFromLoginApi(data) {
+    console.log("add user function works");
+}
+
+function watchSubmit() {
+    $('.js-container').submit(event => {
+        event.preventDefault();
+        console.log('submit button works');
+        $('.js-userName').empty();
+        $('.js-password').empty();
+        const userName = $('.js-userName').val();
+        const password = $('.js-password').val();
+        console.log(userName, password);
+        loginEndpoint(userName, password, displayDataFromLoginApi)
+    });
 }

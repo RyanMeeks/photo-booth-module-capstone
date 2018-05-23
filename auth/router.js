@@ -7,9 +7,9 @@ const bodyParser = require('body-parser');
 const config = require('../config');
 const router = express.Router();
 
-const creatAuthToken = function(user) {
+const createAuthToken = function(user) {
     return jwt.sign({user}, config.JWT_SECRET, {
-        subject: user.usernam,
+        subject: user.username,
         expiresIn: config.JWT_EXPIRY,
         algorithm: 'HS256'
     });
@@ -31,7 +31,8 @@ const jwtAuth = passport.authenticate('jwt', {session: false});
 
 router.post('/refresh', jwtAuth, (req, res) => {
     const authToken = createAuthToken(req.user);
+    res.json({authToken});
 });
 
-module.exports = router;
+module.exports = {router};
 
