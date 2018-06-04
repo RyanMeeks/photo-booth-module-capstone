@@ -3,15 +3,20 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
+const fs = require('fs');
 require('dotenv').config();
 const {DATABASE_URL} = require('./config')
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
-
+const { MusicCharts } = require('./music/models')
+ 
 mongoose.Promise = global.Promise;
 //userRouter can be used..
 const app = express();
 app.use(morgan('common'));
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 // CORS
@@ -25,26 +30,10 @@ app.use(function (req, res, next) {
     next();
   });
   
-  passport.use(localStrategy);
-  passport.use(jwtStrategy);
-  
-  app.use('/api/users/', usersRouter);
-  app.use('/api/auth/', authRouter);
-
-
-
-
 const jwtAuth = passport.authenticate('jwt', {session: false});
 
-
-
-app.get('/', (req, res) => {
-    return res.status(404).json({message: 'Not Found'});
-});
-
-
-
 app.use(express.static('public'));
+
 
 app.get('/api/protected', jwtAuth, (req, res) => {
     return res.json({
