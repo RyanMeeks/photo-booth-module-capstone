@@ -56,6 +56,7 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 });
 
 
+
 if (require.main === module) {
     app.listen(process.env.PORT || 8080, function() {
             console.info(`Your app is listening on port ${this.address().port}`);

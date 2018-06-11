@@ -11,6 +11,39 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
+const generateMusicList = function() {
+    const listName = "Party Fun";
+    const song = {
+        artist: "Testy 123",
+        title: "Party Time",
+        chart: "none",
+        position: 1
+    }
+    return {
+        listName: listName,
+        songs: {
+            song
+        }
+    }
+}
+
+describe('POST /music-list', () => {
+    it('should create a music list', () => {
+        let newList = generateMusicList();
+
+        return chai.request(app)
+        .post('/music-list')
+        send(newList)
+        .then((newList) => {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.should.be.a('object');
+        });
+
+
+    });
+});
+
 describe('PhotBooth Module API Resource', function(){
     it('should return something', function(){
         
