@@ -55,6 +55,14 @@ app.get('/api/protected', jwtAuth, (req, res) => {
     });
 });
 
+//user GETS all of their lists from /music-list
+app.get('/music-list', jwtAuth, (req,res) => {
+    MusicList.find().then((lists) => {
+        res.send({lists});
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
 
 
 if (require.main === module) {
