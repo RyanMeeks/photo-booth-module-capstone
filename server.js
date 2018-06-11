@@ -1,14 +1,14 @@
 'use strict';
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
-const fs = require('fs');
 require('dotenv').config();
 const {DATABASE_URL} = require('./config')
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
-const { MusicCharts } = require('./music/models')
+const { Song, MusicList, MusicChart} = require('./music/models');
  
 mongoose.Promise = global.Promise;
 //userRouter can be used..
@@ -17,8 +17,10 @@ app.use(morgan('common'));
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
+app.use(bodyParser.json());
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
+app.use(express.static('public'));
 // CORS
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -29,18 +31,15 @@ app.use(function (req, res, next) {
     }
     next();
   });
-  
+
+
 const jwtAuth = passport.authenticate('jwt', {session: false});
-
-app.use(express.static('public'));
-
 
 app.get('/api/protected', jwtAuth, (req, res) => {
     return res.json({
         data: 'working!'
     });
 });
-//add endpoints.. app.use on a router file
 
 if (require.main === module) {
     app.listen(process.env.PORT || 8080, function() {
