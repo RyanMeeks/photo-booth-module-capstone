@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 
 const songSchema = mongoose.Schema({
     position: {type: Number, required: false},
+    chart: String,
     artist: String,
     title: String
 });
