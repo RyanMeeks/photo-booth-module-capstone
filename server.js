@@ -41,6 +41,21 @@ app.get('/api/protected', jwtAuth, (req, res) => {
     });
 });
 
+ //user POSTS a list to /music-list
+ app.post('/music-list', jwtAuth, (req, res) => {
+    let musicList = new MusicList ({
+        listName: req.body.listName.trim(),
+        songs: []
+    })
+    
+    musicList.save().then((doc) => {
+        res.send(doc);
+    }, (errors) => {
+        res.status(400).send(errors);
+    });
+});
+
+
 if (require.main === module) {
     app.listen(process.env.PORT || 8080, function() {
             console.info(`Your app is listening on port ${this.address().port}`);
