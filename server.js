@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
 require('dotenv').config();
-const {DATABASE_URL} = require('./config')
+const { PORT, DATABASE_URL} = require('./config')
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const { Song, MusicList, MusicChart} = require('./music/models');
@@ -64,6 +64,43 @@ app.get('/music-list', jwtAuth, (req,res) => {
     });
 });
 
+let server;
+
+function runServer(databaseUrl, port = PORT) {
+
+    return new Promise((resolve, reject) => {
+      mongoose.connect(databaseUrl, err => {
+        if (err) {
+          return reject(err);
+        }
+        server = app.listen(port, () => {
+          console.log(`Your app is listening on port ${port}`);
+          resolve();
+        })
+          .on('error', err => {
+            mongoose.disconnect();
+            reject(err);
+          });
+      });
+    });
+  }
+  
+  // this function closes the server, and returns a promise. we'll
+  // use it in our integration tests later.
+  function closeServer() {
+    return mongoose.disconnect().then(() => {
+      return new Promise((resolve, reject) => {
+        console.log('Closing server');
+        server.close(err => {
+          if (err) {
+            return reject(err);
+          }
+          resolve();
+        });
+      });
+    });
+  }
+
 
 if (require.main === module) {
     app.listen(process.env.PORT || 8080, function() {
@@ -72,4 +109,4 @@ if (require.main === module) {
     mongoose.connect(DATABASE_URL)
 }
 
-module.exports = app;
+module.exports = {app, runServer, closeServer};
