@@ -80,6 +80,31 @@ app.get('/music-list/:listName', jwtAuth, (req, res) => {
 });
 
 
+//User adds song to specific list
+app.post('/music-list/:listName', jwtAuth, (req, res) => {
+    let {listName, artist, title, position, chart} = req.params;
+    MusicList.findOne({listName}).then((NewList) => {
+
+    let request = new Song({
+        position: 0,
+        chart: "",
+        artist: req.body.artist,
+        title: req.body.title
+    });
+    request.save().then((song) =>{
+        if (!NewList.songs) {
+            NewList.songs = [];
+        }
+        NewList.songs.push(song);
+        return NewList.save();
+    }).then((list) => {
+        res.send(list)
+    }).catch((e) => {
+        console.log(e)
+    })
+});
+});
+
 
 
 
