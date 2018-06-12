@@ -41,6 +41,23 @@ app.get('/api/protected', jwtAuth, (req, res) => {
     });
 });
 
+//user POSTS a song to /music
+app.post('/music', (req, res) => {
+    let songRequest = new Song ({
+        position: '',
+        chart: '',
+        title: req.body.title,
+        artist: req.body.artist
+    })
+    songRequest.save().then((song) => {
+        res.send(song);
+    }, (errors) => {
+        res.status(400).send(errors);
+    });
+});
+
+
+
  //user POSTS a list to /music-list
  app.post('/music-list', jwtAuth, (req, res) => {
     let musicList = new MusicList ({
