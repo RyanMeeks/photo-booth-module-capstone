@@ -64,6 +64,25 @@ app.get('/music-list', jwtAuth, (req,res) => {
     });
 });
 
+// //user GETS a single List Displayed
+app.get('/music-list/:listName', jwtAuth, (req, res) => {
+    let {listName} = req.params;
+    
+    MusicList.find({listName}).populate("songs").exec().then((list) => {
+        if(list.length === 0) {
+            return res.status(404).send();
+        }
+        res.json(list[0]);
+        
+    }, (e) => {
+        res.status(404).send(e);
+    });
+});
+
+
+
+
+
 let server;
 
 function runServer(databaseUrl, port = PORT) {
