@@ -105,6 +105,14 @@ app.post('/music-list/:listName', jwtAuth, (req, res) => {
 });
 });
 
+//User Views Top Charts GET request
+app.get('/topcharts', jwtAuth, (req, res) => {
+    MusicChart.find().then((list) => {
+        res.send({list});
+    }, (e) => {
+        res.status(400).send(e);
+    })
+});
 
 
 
