@@ -56,6 +56,14 @@ app.post('/music', (req, res) => {
     });
 });
 
+//user GETS single song requests
+app.get('/music', (req, res) => {
+    Song.find().then((songs)=> {
+        res.send({songs});
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
 
 
  //user POSTS a list to /music-list
