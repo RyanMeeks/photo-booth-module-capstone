@@ -80,7 +80,7 @@ app.get('/music-list/:listName', jwtAuth, (req, res) => {
 });
 
 
-//User adds song to specific list
+//User POSTS song to specific list
 app.post('/music-list/:listName', jwtAuth, (req, res) => {
     let {listName, artist, title, position, chart} = req.params;
     MusicList.findOne({listName}).then((NewList) => {
@@ -114,7 +114,19 @@ app.get('/topcharts', jwtAuth, (req, res) => {
     })
 });
 
-
+//User DELETES an entire list
+app.delete('/music-list/:listName', jwtAuth, (req, res) => {
+    let {listName} = req.params;
+    MusicList.findOneAndRemove({listName})
+    .then((list) => {
+        if (list === null) {
+            return res.status(404).send();
+        }
+        
+        res.send(console.log(list, "successfully removed"));
+        res.status(204);//jim, why 
+    });
+})
 
 let server;
 
