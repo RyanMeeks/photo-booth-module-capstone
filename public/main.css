@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box
+}
+
+#login {
+    border: none;
+}
+
+#logo {
+    display: block;
+    max-width: 50%;
+    max-height:50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#welcome {
+    text-align: center;
+}
+#para-welcome {
+    text-align: left;
+}
+#intro-page {
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: center;
+}
+input {
+    border-radius: 15px;
+    width: 100%;
+    padding: 2px;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
+.submit-button {
+    border: 1px #ee7c61;
+    border-radius: 15px;
+    width: 100%;
+    color: white;
+    height: 30px;
+    background-color: #ee7c61
+}
+#password, #email {
+    display:none;
+}
+
+.js-signUp {
+    color: #ee7c61;
+    text-align: center;
+}
+
+.js-container {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    font-family: 'Nunito', sans-serif;
+}
+
+#usersignup {
+    text-align: center;
+    padding: 5px;
+}
+
+legend {
+    text-align: center;
+}
