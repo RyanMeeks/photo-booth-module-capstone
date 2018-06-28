@@ -212,7 +212,7 @@ function displayTop50API(data) {
 
 
     $('th').on('click', 'img', function(event) {
-        if (customList.length > 1) {
+        if (customList.length >= 1) {
         $(".top-50-row").hide();
         let top50Request = $(this).attr('value');
         console.log(top50Request);
@@ -224,6 +224,7 @@ function displayTop50API(data) {
         else {
             alert("Please Create a Playlist First!")
             addAListPage();
+            
         }
     });
 }
@@ -276,6 +277,12 @@ function displayUserLists(data){
     customList.forEach((list)=> {
         $("#list-nav").append(`<li class="list-name" value="${list}" id="${list}" ondrop="dropRequest(event)" ondragover="allowDrop(event)">${list}</li>`);    
     });
+    if (customList.length === 0) {
+    $('#title').html('<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><h2>Create Your First Playlist</h2>');    
+    }   else {
+    $('#title').html('<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><h2>Your Playlists</h2>');    
+    }
+    console.log(customList);
 };
 // let floatList;
 // let customList;
@@ -309,7 +316,6 @@ function displayUserLists(data){
 
 function displayDataFromLoginApi(data) {
     authToken = data.authToken;
-    $('#title').html('<h2>Music Request List</h2>');
     $('#charts-nav').html(`
         <ul>
            <li id="top-50-API">Top 50 Viral</li>
@@ -401,7 +407,7 @@ function correctCase (str) {
     }
     return words.join(" ");;
 }
-let currentLists;
+
 
 
 function watchForListSubmit() {
@@ -409,7 +415,6 @@ function watchForListSubmit() {
         event.preventDefault();
         let listNameInput = $('#js-new-music-list').val();
         let listName = correctCase(listNameInput);
-        console.log(currentLists);
         $('#js-new-music-list').val('');
         
         $.ajax({
