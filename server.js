@@ -1,5 +1,6 @@
 'use strict';
 const express = require('express');
+const {ObjectID} = require('mongodb');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -26,6 +27,7 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+
     if (req.method === 'OPTIONS') {
       return res.send(204);
     }
@@ -68,9 +70,12 @@ app.get('/music', (req, res) => {
 
  //user POSTS a list to /music-list
  app.post('/music-list', jwtAuth, (req, res) => {
+
+    console.log(req.body);
     let musicList = new MusicList ({
         listName: req.body.listName.trim(),
-        songs: []
+        songs: [],
+        username: req.user.username,
     })
     
     musicList.save().then((doc) => {
@@ -82,7 +87,7 @@ app.get('/music', (req, res) => {
 
 //user GETS all of their lists from /music-list
 app.get('/music-list', jwtAuth, (req,res) => {
-    MusicList.find().then((lists) => {
+    MusicList.find({username: req.user.username}).then((lists) => {
         res.send({lists});
     }, (e) => {
         res.status(400).send(e);
@@ -114,7 +119,8 @@ app.post('/music-list/:listName', jwtAuth, (req, res) => {
         position: 0,
         chart: "",
         artist: req.body.artist,
-        title: req.body.title
+        title: req.body.title,
+        username: req.user.username
     });
     request.save().then((song) =>{
         if (!NewList.songs) {
@@ -152,6 +158,24 @@ app.delete('/music-list/:listName', jwtAuth, (req, res) => {
         res.status(204);//jim, why 
     });
 })
+
+//User DELETES a song from a list using it's UNIQUE ID.
+app.delete('/:id', jwtAuth, (req, res) => {
+    let id = req.params.id;
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send();
+    }
+
+    Song.findByIdAndRemove(id)
+    .then((song) => {
+        if (!song) {
+            return res.status(404).send();
+        }
+        res.send(song);
+    }).catch((e) => {
+        res.status(400).send();
+    });
+});
 
 let server;
 

@@ -272,9 +272,9 @@ function top50APIAddToList(data) {
 let customList;
 function displayUserLists(data){
     customList = data.lists.map(list => list.listName);
-    $(".js-user-lists").empty();
+    $("#list-nav").empty();
     customList.forEach((list)=> {
-        $(".js-user-lists").append(`<button class="list-name" value="${list}" id="${list}" ondrop="dropRequest(event)" ondragover="allowDrop(event)">${list}</button>`);    
+        $("#list-nav").append(`<li class="list-name" value="${list}" id="${list}" ondrop="dropRequest(event)" ondragover="allowDrop(event)">${list}</li>`);    
     });
 };
 // let floatList;
@@ -309,10 +309,12 @@ function displayUserLists(data){
 
 function displayDataFromLoginApi(data) {
     authToken = data.authToken;
-    $('.song-request-container').hide();
+    $('#title').html('<h2>Music Request List</h2>');
+    $('#charts-nav').html(`
+        <ul>
+           <li id="top-50-API">Top 50 Viral</li>
+       </ul>`);
     $('.js-container').html(`
-    <h1>Music Request Lists</h1>
-    <div id="top-50-API" style="color:red">Top 50 Viral</div>
     <div class="js-user-lists"></div>
         <div class="list-request-container">
             <h2>Create a Request List</h2>
@@ -492,8 +494,8 @@ function displayNewListBlank(data) {
 }
 //changed here
 function watchListSelect() {
-    $('.js-user-lists').on('click', 'button', function(event) {
-        let listName = $(this).closest('button').attr('value');
+    $('#list-nav').on('click', 'li', function(event) {
+        let listName = $(this).closest('li').attr('value');
         console.log(listName)
         $.ajax({
             url: `/music-list/${listName}`,
