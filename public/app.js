@@ -198,7 +198,6 @@ function displayTop50API(data) {
     $('.list-request-container').html(`
         <div id="chart-title">Top 50 Viral</div>
         <table id="song-requests-table" style="width:100%">
-            <table>
             ${displayTop50}
             </table>`);
 
