@@ -7,18 +7,49 @@
     <title>Login To Your Event Flow Portal</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="float.css" type="text/css">
     <link rel="stylesheet" href="main.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 </head>
 <body>
     <header>
-        <div id="title"></div>
-            <nav id="list-nav"><ul></ul></nav>
-            <nav id="charts-nav"></nav>
+        <div class="row">
+            <div class="col-12 pre-nav">
+            </div>
+        </div>
+        <div class="row nav-wrapper">
+            <nav role="nav" class="list-nav">
+                    <img src="https://www.shareicon.net/data/2015/12/02/681384_button_512x512.png" width="30px" height="30px" style="filter: invert(100%)">                    <div class="list-heading">Playlists
+                    </div>
+                        <ul class="ul-lists">
+                         </ul>      
+                </nav>
+        </div>
+        <div>
+            <ul class="charts-nav"></ul>
+        </div>
     </header>
-    <main role='main' arria-live='assertive'>
-        <div class="js-container"></div>
-    <script src="app.js" type="application/javascript"></script>
+    <div class="invisible">
+        <div class="row">
+                <div class="col-12 pre-nav">
+                </div>
+            </div>
+            <div class="row nav-wrapper">
+                    <nav role="nav" class="list-nav">
+                        <img src="https://www.shareicon.net/data/2015/12/02/681384_button_512x512.png" width="30px" height="30px" style="filter: invert(100%)">                    <div class="list-heading">Playlists
+                            <ul class="ul-lists">
+                            </ul>      
+                    </nav>
+            </div>
+            <div>
+                <ul class="charts-nav"></ul>
+            </div>    
+    </div>
+    <main role="main" arria-live="assertive">
+        <div class="col-12 main">
+            <div class="js-container"></div>
+        </div>
+            <script src="app.js" type="application/javascript"></script>
     </main>
     <footer></footer>
 </body>

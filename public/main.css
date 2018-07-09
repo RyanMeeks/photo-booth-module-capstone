@@ -1,7 +1,157 @@
 * {
-    box-sizing: border-box
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+main {
+    width: 100%;
+}
+nav img {
+    float: left;
+    margin: .5em;
+}
+/* header navigation styling */
+.invisible {
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFC3B4;
+    width: 100%;
+    padding-bottom: .2em;
+    margin-top: -.5em;
+}
+.list-name {
+    border-bottom: 2px white solid;
+    padding: 5px;
+    color: white;
 }
 
+.list-nav img {
+    color: white;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+.ul-lists {
+    border-top: 2px white solid;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+#welcome {
+    font-size: 1em;
+}
+#para-welcome {
+    font-size: .75em;
+}
+#logo-small {
+    height: 7em;
+    position: absolute;
+    left: .2em;
+
+}
+.nav-wrapper  {
+    padding-left: 0px;
+    padding-right: 0px;
+    background: #FF8568;
+    margin-top: 2em;
+    overflow-y:scroll;
+}
+.list-nav {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.overflow {
+    overflow-y: scroll;
+    height: 15em;
+}
+/* Table Styling */
+tr:nth-child(even) {
+    background: #ee7c61;
+    color: white;
+}
+
+tr:nth-child(odd) {
+    background: #FFF;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFC3B4;
+    width: 100%;
+    padding-bottom: .2em;
+}
+
+#user-title {
+    float: right;
+    font-weight: 900;
+    color: black;
+    font-size: 2em;
+    margin: .9em 0 0 0;
+}
+#user-title {
+    top:30px;
+    left: 150px;
+}
+
+
+#logo-banner {
+    display: inline-block;
+}
+
+
+
+
+/* navigation styling */
+
+.you-are-here {
+    font-weight: 1200;
+    color: white;
+}
+.list-name {
+    list-style: none;
+    font-weight: 900;
+    font-size: 1.5em;
+}
+/* end nav styling */
+.list-container {
+    background: #ee7c61;
+    border-radius: 10px;
+    border: 2px solid white;
+    color: white
+}
+
+/* table border radius */
+table tr:last-child th:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+table tr:last-child th:last-child {
+    border-bottom-right-radius: 10px;
+}
+table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+#song-requests-table {
+    margin-top: .2em;
+    table-layout: fixed;
+    overflow-wrap:break-word;
+}
 #login {
     border: none;
 }
@@ -28,18 +178,56 @@
 input {
     border-radius: 15px;
     width: 100%;
-    padding: 2px;
+    padding: .75em;
     height: 30px;
     margin-bottom: 5px;
+    font-size: .75em;
+}
+#js-new-music-list {
+    margin-bottom: .5em;
 }
 
+.border-top-bottom {
+    margin-top: .2em;
+    margin-bottom: .2em;
+    border-top: white solid 2px;
+    border-bottom: white solid 2px;
+}
+.create-a-list {
+    margin: .7em 0 .3em 0;
+}
+
+.add-remove {
+    font-size: 0;
+}
+
+#delete {
+    background: #ff0000;
+    color: white;
+    font-weight: lighter;
+    margin-bottom: .5em;
+    border-radius: 5px;
+    width: 50%;
+    height: 3em;
+    font-size: 18px;
+}
+#create-new-list {
+    background: green;
+    color: white;
+    margin-bottom: .5em;
+    border-radius: 5px;
+    width: 50%;
+    height: 3em;
+    font-size: 18px;
+}
 .submit-button {
     border: 1px #ee7c61;
     border-radius: 15px;
     width: 100%;
-    color: white;
-    height: 30px;
-    background-color: #ee7c61
+    color: white;   
+    background-color: #ee7c61;
+    font-size: 1em;
+    padding: .2em;
 }
 #password, #email {
     display:none;
@@ -47,20 +235,90 @@ input {
 
 .js-signUp {
     color: #ee7c61;
-    text-align: center;
+    text-align: left;
+    cursor: pointer;
 }
+
+
 
 .js-container {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: 100%;
     font-family: 'Nunito', sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 1em;
+    margin-top: .4em;
 }
 
+body {
+    background: #FFC3B4;
+}
 #usersignup {
     text-align: center;
     padding: 5px;
+}
+nav h2 {
+    font-size: 2.5em;
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 0px;
+    padding-bottom: .15em;
+    padding-top: .15em;
+    color: white;
+}
+
+ul, menu, dir {
+    display: block;
+    list-style-type: none;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+}
+ul.charts-nav {
+    -webkit-padding-start: 0px;
+}
+
+.charts-nav {
+    color: white;
+    list-style: none;
+    font-size: 1em;
+    width: 100%;
+    background-color: #FF8568;
+}
+.list-heading {
+    font-size: 2em;
+    color: white;
+}
+
+.js-top-50-viral {
+    font-size: 1.5em;
+    color:white;
+}
+
+.js-top-50-wedding {
+    font-size: 1.5em;
+    color: white;
+}
+
+.charts-nav {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+    border-top: white 2px solid;
+}
+ul li {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+    padding: .2em;
+    list-style: none;
+    color: white;
+    font-size: 1.5em;
 }
 
 legend {

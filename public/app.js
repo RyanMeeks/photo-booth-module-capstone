@@ -68,11 +68,13 @@ function getAndDisplayTemplateInfo() {
 $(userLogin)
 
 function userLogin() {
+    $('header').hide();
+    $('.invisible').hide();
     $('.js-container').html(
         `
         <img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
         <div id="intro-page">
-            <h1 id="welcome">Log in to Record Crate</h1>
+            <div id="welcome">Log in to Record Crate</div>
             <p id="para-welcome">A fun way to create and manage custom playlists with your favorite tracks!</p>
         </div>
         <form id="js-loginForm">
@@ -168,8 +170,9 @@ function loginEndpoint(username, password, callback) {
     $.ajax(settings);
     console.log(settings);
 }
+
 function top50APIClick() {
-    $('#top-50-API').click(event => {
+    $('.js-top-50-viral').click(event => {
         $.ajax({
             url: 'http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=e1c8f246d4e4f0fb0e69b6f45b52c728&format=json',
             success: function(data){
@@ -179,37 +182,25 @@ function top50APIClick() {
         });
 }
 
-
 function displayTop50API(data) {
     const top50ListArray = data.tracks.track;
     console.log(top50ListArray);
     let displayTop50Original = top50ListArray.map(song =>
-    `<tbody>
-        <tr class="top-50-row">
+    `<tr class="top-50-row">
             <th>${song.artist.name}</th>
             <th>${song.name}</th> 
             <th><img class="js-click-list" value="${song.artist.name}-${song.name}" src="https://cdn0.iconfinder.com/data/icons/feather/96/circle-add-512.png" width="20px" height="20px"></th>
-        </tr>
-    </tbody>
-    <div class="user-list"></div>`
+        </tr>`
     );
 
-    
    let displayTop50 = displayTop50Original.join('');
     $('.list-request-container').empty();
     $('.list-request-container').html(`
-        <h1 id="chart-title">Top 50 Viral (from Last.fm)</h1>
-        <table id="song-requests-table" style="width:80%">
-            <tbody>
-                <tr>
-                    <th id="artist">Artist</th>
-                    <th>Title</th> 
-                    <th>Add To A List</th>
-                </tr>
-            </tbody>
-            ${displayTop50}`);
-
-
+        <div id="chart-title">Top 50 Viral</div>
+        <table id="song-requests-table" style="width:100%">
+            <table>
+            ${displayTop50}
+            </table>`);
 
     $('th').on('click', 'img', function(event) {
         if (customList.length >= 1) {
@@ -218,13 +209,12 @@ function displayTop50API(data) {
         console.log(top50Request);
         $('#song-requests-table').empty();
         $('.user-list').remove();
-        $('#chart-title').html(`<h2>Select a List to Add ${top50Request}</h2>`);
+        $('#chart-title').html(`Select a List to Add ${top50Request}`);
         top50APIAddToList(top50Request);
         }
         else {
             alert("Please Create a Playlist First!")
-            addAListPage();
-            
+            addAListPage();           
         }
     });
 }
@@ -233,9 +223,10 @@ function top50APIAddToList(data) {
     let newRequest = data.split("-");
     let artist = newRequest[0];
     let title = newRequest[1];
-    console.log(artist, title)
+    console.log(artist, title);
     customList.forEach((list)=> {
-        $('#song-requests-table').append(`<button class="list-name" value="${list}" id="${list}" ondrop="dropRequest(event)" ondragover="allowDrop(event)">${list}</button>`);    
+        $('#song-requests-table').append(`
+        <button class="list-name" value="${list}" id="${list}">${list}</button>`);    
     });
 
     $('#song-requests-table').on("click", "button", function() {
@@ -257,97 +248,73 @@ function top50APIAddToList(data) {
             })
         );
     });
-    
-    
-    
 }
 
-//Drag/Drop Requests
-// function allowDrop(ev) {
-//     ev.preventDefault();
-// }
-// function dragRequest(ev){
-//    ev.dataTransfer.setData("text", ev.target.id);`
-   
-// }
 let customList;
 function displayUserLists(data){
     customList = data.lists.map(list => list.listName);
-    $("#list-nav").empty();
+    $(".ul-lists").empty();
     customList.forEach((list)=> {
-        $("#list-nav").append(`<li class="list-name" value="${list}" id="${list}" ondrop="dropRequest(event)" ondragover="allowDrop(event)">${list}</li>`);    
+        $(".ul-lists").append(`<li class="list-name" value="${list}" id="${list}">${list}</li>`);
     });
-    if (customList.length === 0) {
-    $('#title').html('<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><h2>Create Your First Playlist</h2>');    
-    }   else {
-    $('#title').html('<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><h2>Your Playlists</h2>');    
-    }
-    console.log(customList);
+        $('header .col-12').html('<img id="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div id="user-title">Record Crate</div>'); 
+        $('.invisible .col-12').html('<img id="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div id="user-title">Record Crate</div>');
 };
-// let floatList;
-// let customList;
-// function mouseOverVariable() {
-//     $(".list-name").mouseover(function(){
-//         floatList = $(this).attr('id')
-//         console.log("mouseover works", floatList);
-//         return floatList;
-//     });    
-    
-// }
-
-// function dropRequest(ev) {
-//     let data = ev.dataTransfer.getData('text').split(", ");
-//     console.log(data);
-//     let artist = data[0];
-//     let title = data[1];
-//     //tryingto drag and drop top50 to user lists.
-//     if (floatList != undefined) {
-//     $.ajax({
-//         url:`/music-list/${floatList}`,
-//         method: 'POST',
-//         headers: {"Authorization": "Bearer " + authToken},
-//         data: JSON.stringify({artist:artist, title: title}),
-//         dataType: 'json',
-//         contentType: 'application/json',
-//         success: console.log('song added')
-//         });
-//     };
-// }
 
 function displayDataFromLoginApi(data) {
     authToken = data.authToken;
-    $('#charts-nav').html(`
-        <ul>
-           <li id="top-50-API">Top 50 Viral</li>
-       </ul>`);
-    $('.js-container').html(`
-    <div class="js-user-lists"></div>
-        <div class="list-request-container">
-            <h2>Create a Request List</h2>
-                <form id="js-song-list-form">
-                    <label for="list-entry">Enter List Name</label>
-                    <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
-                    <button type="submit">Submit</button>
-                </form>
-        </div>
-        <div id="song-request-container">
-            <h2>Single Song Request</h2>
-                <form id="js-song-request-form">
-                    <label for="artist-entry">Add an artist</label>
-                    <input type="text" name="single-artist-entry" id="js-new-artist" placeholder="Artist">
-                    <label for="song-entry">Add a title</label>
-                    <input type="text" name="single-title-entry" id="js-new-title" placeholder="Title">
-                    <button type="submit">Submit</button>
-                </form>
-            <div class="request-placeholder"><div>
-        </div>
-    `);
-    $('#song-request-container').hide();
+    $('header').show();
+    $('.invisible').show();
+    $(".ul-lists").hide();
+    $('.charts-nav').html(`
+    <div class="list-heading">Charts</div>
+        <li class="js-top-50-viral">Top 50 Viral</li>
+        <li class="js-top-50-wedding">Top 50 Wedding</li>
+`);
+$(".main").addClass("border-top-bottom");
+
+createAListScreen();
+showListNav(); 
 getUserMusicLists();
 watchForListSubmit();
 top50APIClick();
+}
 
+function createAListScreen() {
 
+    $('.js-container').html(`
+    <div class="js-user-lists"></div>
+        <div class="list-request-container">
+            <div class="create-a-list"><span>Create A List</span></div>
+                <form id="js-song-list-form">
+                    <label for="list-entry" style="display:none">Enter List Name</label>                    <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
+                    <button class="submit-button" type="submit">Submit</button>
+                </form>
+        </div>`)
+}
+//toggles for nav
+function showListNav() {
+    $(".list-nav").click(event => {
+        if (customList.length > 0) {
+            $(".ul-lists").show();
+            $('.list-nav').addClass('overflow')
+            $('.charts-nav').hide();
+        }
+        else {
+            alert("You Need to Create a List First!");
+            showListNav();
+        }
+        hideListNav();
+    });
+}
+
+function hideListNav() {
+    $(".list-nav").click(event => {
+        $(".ul-lists").hide();
+        $('.list-nav').removeClass('overflow');
+        showListNav();
+        $('.charts-nav').show();
+    });
 }
 
 function deleteList(data) {
@@ -373,29 +340,9 @@ function deleteList(data) {
     });
 }
 function addAListPage() {
-    $('.list-request-container').html(`
-        <div class="list-request-container">
-            <h2>Create a Request List</h2>
-                <form id="js-song-list-form">
-                    <label for="list-entry">Enter List Name</label>
-                    <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
-                    <button type="submit">Submit</button>
-                </form>
-        </div>
-        <div id="song-request-container">
-            <h2>Single Song Request</h2>
-                <form id="js-song-request-form">
-                    <label for="artist-entry">Add an artist</label>
-                    <input type="text" name="single-artist-entry" id="js-new-artist" placeholder="Artist">
-                    <label for="song-entry">Add a title</label>
-                    <input type="text" name="single-title-entry" id="js-new-title" placeholder="Title">
-                    <button type="submit">Submit</button>
-                </form>
-            <div class="request-placeholder"><div>
-        </div>
-    `);
+    createAListScreen();
     $('#song-request-container').hide();
-    watchForListSubmit();
+watchForListSubmit();
 }
 
 function correctCase (str) {
@@ -407,8 +354,6 @@ function correctCase (str) {
     }
     return words.join(" ");;
 }
-
-
 
 function watchForListSubmit() {
     $('#js-song-list-form').submit((event) => {
@@ -433,80 +378,40 @@ function watchForListSubmit() {
 }
 function displaySuccessListCreation(listData) {
     $('.list-request-container').html(`
-    <h1 value="listName">${listData}</h1>
+    <div class="succes-case">
     <p>Success! "${listData}" Created!</p>
-    <button id="continue">Continue</button>
+    <button class="submit-button" id="continue">Continue</button>
+    </div>
    `)
    $('#continue').click(event => {
-        getUserMusicLists();
+        getUserMusicLists(listData);
         displayNewListBlank(listData);
+        $('.charts-nav').show();
         
    });
 }
 
-function displayNewListBlank(data) {
-    $('.list-request-container').html(`
-    <h1 value="listName">${data}</h1>
-    <button id="delete">Delete this list</button>
-    <button id="create-new-list">Create New List</button>
-    <h2>Add a Song</h2>
-                <form id="js-song-request-form">
-                    <label for="artist-entry">Enter Artist</label>
-                    <input type="text" name="artist-entry" id="js-artist-entry" placeholder="Artist">
-                    <label for="title-entry">Enter Title</label>
-                    <input type="text" name="title-entry" id="js-title-entry" placeholder="Title">
-                    <button type="submit">Submit</button>
-                </form>
-    <table id="song-requests-table" style="width:80%">
-    <tbody>
-    <tr>
-      <th>Artist</th>
-      <th>Title</th> 
-      <th>Remove From List</th>
-    </tr>
-    </tbody>
-   `)
-
+function displayNewListBlank(data) {    
+    let newListMusic = "";
+    populateList(newListMusic, data)
    $('#create-new-list').click(function() {
     addAListPage();
-});
-   $('#js-song-request-form').submit((event) => {
-    event.preventDefault();
-    let artist = $('#js-artist-entry').val().trim();
-    let title =$('#js-title-entry').val().trim();
-    artist = correctCase(artist);
-    title = correctCase(title);
-    //delete this code??s
-    console.log(artist, title);
-    $('#js-title-entry').val('');
-    $('#js-artist-entry').val('');
+    });
 
-
-    $.ajax({
-        url:`/music-list/${data.listName}`,
-        method: 'POST',
-        headers: {"Authorization": "Bearer " + authToken},
-        data: JSON.stringify({artist:artist, title: title}),
-        dataType: 'json',
-        contentType: 'application/json',
-        success: generateList(artist, title)
-        });
-    
- });
- deleteList(data);
- 
- 
+deleteList(data);
+songSubmit(data);
 }
 //changed here
 function watchListSelect() {
-    $('#list-nav').on('click', 'li', function(event) {
+    
+    $('.list-nav').on('click', 'li', function(event) {
+
         let listName = $(this).closest('li').attr('value');
         console.log(listName)
         $.ajax({
             url: `/music-list/${listName}`,
             method: 'GET',
-            contentType: 'json',
-            data: JSON.stringify({listName:listName}),
+            contentType: 'String',
             headers: {"Authorization": "Bearer " + authToken}
         }).done(function(data){
             displayListAPI(data);
@@ -532,81 +437,101 @@ function deleteSong() {
 function addRequestToList(data) {
 
 }
-
+let thisListOfMusic;
 function displayListAPI(data) {
-    console.log(data)
-    let thisListOfMusic = data.songs.map(songs => 
-        `<tbody>
-            <tr id="${songs._id}">
-                <th class="artist-name" value="${songs.artist}">${songs.artist}</th>
-                <th class="title-name" value="${songs.title}">${songs.title}</th> 
-                <th class="remove" value="${songs.artist}, ${songs.title}"><img src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
-            </tr>
-        </tbody>
-    `); 
-    let listOfMusic = data.songs.map(songs => `${songs.artist} ${songs.title}`)
-    
-    $('.list-request-container').html(`
-    <h1 value="listName">${data.listName}</h1>
-    <button id="delete">Delete this list</button>
-    <button id="create-new-list">Create a New List</button>
-    <h2>Add a Song</h2>
-                <form id="js-song-request-form">
-                    <label for="artist-entry">Enter Artist</label>
-                    <input type="text" name="artist-entry" id="js-artist-entry" placeholder="Artist">
-                    <label for="title-entry">Enter Title</label>
-                    <input type="text" name="title-entry" id="js-title-entry" placeholder="Title">
-                    <button type="submit">Submit</button>
-                </form>
-    <table id="song-requests-table" style="width:80%">
-    <tbody class="tbody">
-    <tr>
-      <th>Artist</th>
-      <th>Title</th> 
-      <th>Remove From List</th>
-    </tr>
-    </tbody>
-    ${thisListOfMusic}
-    </table>
-   `)
+    let newList;
+    let reverseOrder = function(data) {
+    for (let i = data.songs.length + 1; i < data.songs.length; i--) {
+        newList.push([i]);
+        console.log(newList)
+    }
+    return newList;
+}
 
-   $('#js-song-request-form').submit((event) => {
-       event.preventDefault();
-       let artist = $('#js-artist-entry').val().trim();
-       let title =$('#js-title-entry').val().trim(); 
-       artist = correctCase(artist);
-       title = correctCase(title);
-       $('#js-title-entry').val('');
-       $('#js-artist-entry').val('');
-       
-       $.ajax({
-           url:`/music-list/${data.listName}`,
-           method: 'POST',
-           headers: {"Authorization": "Bearer " + authToken},
-           data: JSON.stringify({artist:artist, title: title}),
-           dataType: 'json',
-           contentType: 'application/json',
-           success: generateList(artist, title)
-           });
-    });
-    console.log("looking for", data)
+console.log(reverseOrder);
+
+    thisListOfMusic = data.songs.map(songs => 
+        `<tr id="${songs._id}">
+            <th class="artist-name" value="${songs.artist}">${songs.artist}</th>
+            <th class="title-name" value="${songs.title}">${songs.title}</th> 
+            <th class="remove" value="${songs.artist}, ${songs.title}"><img src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
+        </tr>
+    `); 
+    let newListMusic = thisListOfMusic.reverse().join('\n\t');
+    populateList(newListMusic, data.listName);
+    songSubmit(data.listName);
     deleteList(data.listName);
     deleteSong();
     $('#create-new-list').click(function() {
         addAListPage();
     });
 }
-function generateList(artist, title) {
-    $('#song-requests-table tbody:last').after(`<tbody>
-    <tr id="${artist}, ${title}">
-      <th>${artist}</th>
-      <th>${title}</th> 
-      <th class="remove" value="${artist}, ${title}"><img src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
-    </tr>
-    </tbody>`)
+
+function populateList(newListMusic, data) {
+    $('.list-request-container').html(`
+    <div class="list-container">
+            <div class="add-remove">
+                <button id="delete">DELETE LIST</button>
+                <button id="create-new-list">NEW LIST</button>
+            </div>
+            <div class="list-add-song" value="listName">${data.toUpperCase()}</div>
+    </div>
+    <div class="request-form-container">
+            <form id="js-song-request-form">
+                <label for="artist-entry" style="display:none">Enter Artist</label>
+                <input type="text" name="artist-entry" id="js-artist-entry" placeholder="ARTIST">
+                <label for="title-entry" style="display:none">Enter Title</label>
+                <input type="text" name="title-entry" id="js-title-entry" placeholder="TITLE">
+                <button type="submit" class="submit-button">Add Song!</button>
+            </form>
+    </div>
+    <div class="song-request-container">
+        <table id="song-requests-table" style="width:100%">
+                <tbody>
+            ${newListMusic} 
+                </tbody>
+        </table>
+    </div>`);
 }
 
-function getUserMusicLists (){
+function songSubmit(data) {
+    let listPassThrough = data;
+    console.log(listPassThrough);
+    $('#js-song-request-form').submit((event) => {
+        event.preventDefault();
+        let artist = $('#js-artist-entry').val().trim();
+        let title =$('#js-title-entry').val().trim(); 
+        artist = correctCase(artist);
+        title = correctCase(title);
+        $('#js-title-entry').val('');
+        $('#js-artist-entry').val('');
+        
+        $.ajax({
+            url:`/music-list/${data}`,
+            method: 'POST',
+            headers: {"Authorization": "Bearer " + authToken},
+            data: JSON.stringify({artist:artist, title: title}),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function() {
+                alert("success! Song Added!");
+                $.ajax({
+                    url: `/music-list/${listPassThrough}`,
+                    method: 'GET',
+                    contentType: 'String',
+                    headers: {"Authorization": "Bearer " + authToken}
+                }).done(function(data){
+                    displayListAPI(data);
+                });
+            },
+            error: function() {
+                console.log("Error Posting");
+            }
+            });
+     });
+}
+
+function getUserMusicLists(data){
     $.ajax({
         url: '/music-list',
         method: 'GET',
@@ -617,7 +542,6 @@ function getUserMusicLists (){
 }
 
 function watchSubmit() {
-    
     $('#js-loginForm').submit(event => {
         event.preventDefault();
         const userName = $('#js-userNameLogin').val().trim().toLowerCase();
@@ -661,6 +585,9 @@ function displayDataFromSignUpApi (username) {
     })
 
 }
+
+
+//menu on mobile
 
 
 
