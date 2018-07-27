@@ -1,4 +1,5 @@
 'use strict';
+
 const express = require('express');
 const {ObjectID} = require('mongodb');
 const bodyParser = require('body-parser');
@@ -10,9 +11,9 @@ const { PORT, DATABASE_URL} = require('./config')
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const { Song, MusicList, MusicChart} = require('./music/models');
- 
+
 mongoose.Promise = global.Promise;
-//userRouter can be used..
+
 const app = express();
 app.use(morgan('common'));
 
@@ -44,34 +45,84 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 });
 
 //user POSTS a song to /music
-app.post('/music', (req, res) => {
-    let songRequest = new Song ({
-        position: '',
-        chart: '',
-        title: req.body.title,
-        artist: req.body.artist
-    })
-    songRequest.save().then((song) => {
-        res.send(song);
+// app.post('/music', (req, res) => {
+//     let songRequest = new Song ({
+//         position: '',
+//         chart: '',
+//         title: req.body.title,
+//         artist: req.body.artist
+//     })
+//     songRequest.save().then((song) => {
+//         res.send(song);
+//     }, (errors) => {
+//         res.status(400).send(errors);
+//     });
+// });
+
+//user GETS single song requests
+// app.get('/music', (req, res) => {
+//     Song.find().then((songs)=> {
+//         res.send({songs});
+//     }, (e) => {
+//         res.status(400).send(e);
+//     });
+// });
+
+
+// user GETS all of their lists to display
+app.get('/music-list', jwtAuth, (req,res) => {
+    MusicList.find({username: req.user.username}).then((lists) => {
+        res.send({lists});   
     }, (errors) => {
         res.status(400).send(errors);
     });
 });
 
-//user GETS single song requests
-app.get('/music', (req, res) => {
-    Song.find().then((songs)=> {
-        res.send({songs});
-    }, (e) => {
-        res.status(400).send(e);
+// user GETS a single List with it's songs to display
+app.get('/music-list/:listName', jwtAuth, (req, res) => {
+    let {listName} = req.params;
+    MusicList.find({listName}).populate("songs").exec().then((list) => {
+        if (list.length === 0) {
+            return res.status(404).send();
+        }
+        res.json(list[0]);
+    }, (errors) => {
+        res.status(404).send(errors);
     });
 });
 
+// user POSTS song to specific, exisiting list
+app.post('/music-list/:listName', jwtAuth, (req, res) => {
+    let {listName, artist, title, position, chart} = req.params;
+    MusicList.findOne({listName}).then((NewList) => {
+        let request = new Song({
+            position: 0,
+            chart: "",
+            artist: req.body.artist,
+            title: req.body.title,
+            username: req.user.username
+        });
+        request.save().then((song) =>{
+            if (!NewList.songs) {
+                NewList.songs = [];
+            }
+            NewList.songs.push(song);
+            return NewList.save();
+        })
+        .then((list) => {
+            return list.populate("songs").execPopulate();
+        })
+        .then((list) => {
+            res.send(list)
+        })
+        .catch((errors) => {
+            console.log(errors)
+        })
+    });
+});
 
- //user POSTS a list to /music-list
+ // user POSTS a list to /music-list
  app.post('/music-list', jwtAuth, (req, res) => {
-
-    console.log(req.body);
     let musicList = new MusicList ({
         listName: req.body.listName.trim(),
         songs: [],
@@ -79,69 +130,26 @@ app.get('/music', (req, res) => {
     })
     
     musicList.save().then((doc) => {
-        res.send(doc);
+        
+        return doc.save();
     }, (errors) => {
         res.status(400).send(errors);
-    });
-});
-
-//user GETS all of their lists from /music-list
-app.get('/music-list', jwtAuth, (req,res) => {
-    MusicList.find({username: req.user.username}).then((lists) => {
-        res.send({lists});
-    }, (e) => {
-        res.status(400).send(e);
-    });
-});
-
-// //user GETS a single List Displayed
-app.get('/music-list/:listName', jwtAuth, (req, res) => {
-    let {listName} = req.params;
-    
-    MusicList.find({listName}).populate("songs").exec().then((list) => {
-        if(list.length === 0) {
-            return res.status(404).send();
-        }
-        res.json(list[0]);
-        
-    }, (e) => {
-        res.status(404).send(e);
-    });
-});
-
-
-//User POSTS song to specific list
-app.post('/music-list/:listName', jwtAuth, (req, res) => {
-    let {listName, artist, title, position, chart} = req.params;
-    MusicList.findOne({listName}).then((NewList) => {
-
-    let request = new Song({
-        position: 0,
-        chart: "",
-        artist: req.body.artist,
-        title: req.body.title,
-        username: req.user.username
-    });
-    request.save().then((song) =>{
-        if (!NewList.songs) {
-            NewList.songs = [];
-        }
-        NewList.songs.push(song);
-        return NewList.save();
-    }).then((list) => {
-        res.send(list)
-    }).catch((e) => {
-        console.log(e)
     })
-});
+    .then((list)=> {
+        return list.populate("musiclists").execPopulate();
+    })
+    .then((list) => {
+        res.send(list)
+    })
+    .catch((e)=> {console.log(errors)})
 });
 
 //User Views Top Charts GET request
 app.get('/topcharts', jwtAuth, (req, res) => {
     MusicChart.find().then((list) => {
         res.send({list});
-    }, (e) => {
-        res.status(400).send(e);
+    }, (errors) => {
+        res.status(400).send(errors);
     })
 });
 
@@ -149,13 +157,11 @@ app.get('/topcharts', jwtAuth, (req, res) => {
 app.delete('/music-list/:listName', jwtAuth, (req, res) => {
     let {listName} = req.params;
     MusicList.findOneAndRemove({listName})
-    .then((list) => {
-        if (list === null) {
-            return res.status(404).send();
-        }
-        
-        res.send(console.log(list, "successfully removed"));
-        res.status(204);//jim, why 
+        .then((list) => {
+            if (list === null) {
+                return res.status(404).send();
+            }
+        res.status(204).send();
     });
 })
 
@@ -165,13 +171,12 @@ app.delete('/:id', jwtAuth, (req, res) => {
     if (!ObjectID.isValid(id)) {
         return res.status(404).send();
     }
-
     Song.findByIdAndRemove(id)
     .then((song) => {
         if (!song) {
             return res.status(404).send();
         }
-        res.send(song);
+        return res.status(204).send();
     }).catch((e) => {
         res.status(400).send();
     });
