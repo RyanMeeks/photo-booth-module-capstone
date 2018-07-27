@@ -94,7 +94,7 @@ router.post('/', jsonParser, (req, res) => {
                     message: 'Username already taken',
                 });
             }
-            //if there's an existing user, hash the passw.
+            //if there's not an existing user, hash the passw.
             return User.hashPassword(password);
         })
         .then(hash => {
@@ -104,6 +104,8 @@ router.post('/', jsonParser, (req, res) => {
                 firstName,
                 lastName
             })
+        })
+
             .then(user => {
                 return res.status(201).json(user.serialize());
             })
@@ -116,7 +118,7 @@ router.post('/', jsonParser, (req, res) => {
                     message: 'Internal Server Error'
                 });
             });
-        });
+        
     });
 
     module.exports = {router};

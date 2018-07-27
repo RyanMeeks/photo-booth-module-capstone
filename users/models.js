@@ -2,13 +2,15 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 
-mongoose.Promixe = global.Promise;
+mongoose.Promise = global.Promise;
 
 const UserSchema = mongoose.Schema({
     username: {
         type: String,
         require: true,
         unique: true,
+        trim: true,
+        minlength: 1
     },
     password: {
         type: String,
