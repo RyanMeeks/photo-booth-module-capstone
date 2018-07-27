@@ -13,10 +13,10 @@ function userLogin() {
     $('.js-container').html(
         `<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
         <div class="intro-container">
-        <div id="intro-page">
-            <div id="welcome">Log in to Record Crate</div>
-            <p id="para-welcome">A fun way to create and manage custom playlists with your favorite tracks!</p>
-        </div>
+            <div id="intro-page">
+                <div id="welcome">Log in to Record Crate</div>
+                <p id="para-welcome">A fun way to create and manage custom playlists with your favorite tracks!</p>
+            </div>
         <form id="js-loginForm">
             <fieldset id="login">
             <legend style="display:none">Login To Your Music List</legend>
@@ -47,12 +47,12 @@ function userLogin() {
 function watchSignUpClick() {
     $('.js-signUp').click(event => {
         $('.js-container').html(
-            `
-        <img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
-        <div id="intro-page">
-            <h1 id="welcome">Sign up for Record Crate</h1>
-            <p id="para-welcome">A fun way to create and manage custom playlists with your favorite tracks!</p>
-        </div>
+        `<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        <div class="intro-container">
+            <div id="intro-page">
+                <h1 id="welcome">Sign up for Record Crate</h1>
+                <p id="para-welcome">A fun way to create and manage custom playlists with your favorite tracks!</p>
+             </div>
         <form id="js-signUpForm">
             <fieldset id="login">
             <legend style="display:none">Sign Up for Record Crate</legend>
@@ -73,6 +73,7 @@ function watchSignUpClick() {
                 <div class="js-signUp">
                     <span>Already signed up?</span>
                 </div>
+            </div>
             </div>`
         );
     watchSignUpSubmit();
@@ -404,8 +405,8 @@ function populateList(newListMusic, data) {
     $('.list-request-container').html(`
     <div class="list-container">
             <div class="add-remove">
-                <button id="delete">DELETE LIST</button>
-                <button id="create-new-list">NEW LIST</button>
+                <button id="delete" class="hover">DELETE LIST</button>
+                <button id="create-new-list" class="hover">NEW LIST</button>
             </div>
             <div class="list-add-song" value="listName">${data.toUpperCase()}</div>
     </div>
