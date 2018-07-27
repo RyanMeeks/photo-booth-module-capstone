@@ -2,48 +2,26 @@
 
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
- 
+const {User} = require('../users/models');
 
 const songSchema = mongoose.Schema({
     position: {type: Number, required: false},
     chart: String,
     artist: String,
-    title: String
+    title: String,
+    username: {type: String, ref: 'User'}
 });
-
 
 const musicChartSchema = mongoose.Schema({
     chart: {type: String, required: true},
     songs: [{type: Schema.Types.ObjectId, ref: 'Song'}]
 });
 
-
-
 const musicListSchema = mongoose.Schema({
+    username: {type: String, ref: 'User'},
     listName: {type: String, required: true},
     songs: [{type: Schema.Types.ObjectId, ref: 'Song'}]
 })
-
-//[{type: Schema.Types.ObjectId, ref: 'Song'}]
-
-
-// musicChartSchema.virtual('artistTitleString').get(function() {
-//     return `${this.list.artist} - ${this.list.title}`;
-// });
-
-// musicChartSchema.virtual('rank').get(function() {
-//     const rankSongs = this.list.sort((a, b) => {return b.postion - a.position;})[0] || {};
-//     return rankSongs.position;
-// });
-
-// musicChartSchema.methods.serialize = function() {
-//     return {
-//         position: this.position,
-//         artist: this.artist,
-//         title: this.title
-//     };
-// };
-
 
 const Song = mongoose.model('Song', songSchema);
 const MusicChart = mongoose.model('MusicChart', musicChartSchema);
