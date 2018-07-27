@@ -22,12 +22,12 @@ function userLogin() {
             <legend style="display:none">Login To Your Music List</legend>
                 <div id="usersignup">
                     <div id="email-box">
-                        <label id="email" for="email">Email</label>
-                        <input id="js-userNameLogin" email="email" type="text" placeholder="email, phone or username"/>
+                        <label id="email" for="email" value="email">Email</label>
+                        <input id="js-userNameLogin" name="email" aria-labelledby="email" type="text" placeholder="email, phone or username"/>
                     </div>
                     <div id="password-box">
-                        <label id="password" for="password">Password</label>
-                        <input id="js-passwordLogin" name="password" type="text" placeholder="password"/> 
+                        <label id="password" for="password" value="password">Password</label>
+                        <input id="js-passwordLogin" aria-labelledby="password" name="password" type="text" placeholder="password"/> 
                     </div>
                     <button class="submit-button" type="submit" value="submit">Submit</button>
                 </div>
@@ -35,7 +35,7 @@ function userLogin() {
         </form>
         <div class="login-footer">
             <div class="js-signUp">
-                <span>Sign Up For Record Crate</span>
+                <div>New to Record Crate? <span>Sign Up Now</span></div>
             </div>
         </div>
         </div>`
@@ -58,12 +58,12 @@ function watchSignUpClick() {
             <legend style="display:none">Sign Up for Record Crate</legend>
                 <div id="usersignup">
                     <div id="email-box">
-                        <label id="email" for="email">Email</label>
-                        <input id="js-userNameLogin" email="email" type="text" placeholder="email, phone or username"/>
+                        <label id="email" for="email" value="email">Email</label>
+                        <input id="js-userNameLogin" aria-labelledby="email" name="email" type="text" placeholder="email, phone or username"/>
                     </div>
                     <div id="password-box">
                         <label id="password" for="password">Password</label>
-                        <input id="js-passwordLogin" name="password" type="text" placeholder="password"/> 
+                        <input id="js-passwordLogin" name="password"aria-labelledby="password"  type="text" placeholder="password"/> 
                     </div>
                     <button class="submit-button" type="submit" value="submit">Submit</button>
                 </div>
@@ -71,8 +71,7 @@ function watchSignUpClick() {
         </form>
         <div class="login-footer">
                 <div class="js-signUp">
-                    <span>Already signed up?</span>
-                </div>
+                <div>Already Signed Up? <span>Login Now</span></div>
             </div>
             </div>`
         );
@@ -387,7 +386,7 @@ function displayListAPI(data) {
         `<tr id="${songs._id}">
             <th class="artist-name" value="${songs.artist}">${songs.artist}</th>
             <th class="title-name" value="${songs.title}">${songs.title}</th> 
-            <th class="remove" value="${songs.artist}, ${songs.title}"><img src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
+            <th class="remove" value="${songs.artist}, ${songs.title}"><img class="delete-x" src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
         </tr>
     `);
     

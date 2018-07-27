@@ -12,9 +12,7 @@ main {
         top: .1em;
         color: white;
     }
-    .hover:hover {
-        cursor:pointer;
-    }
+    
     img#logo {
         display: inline-block;
         float: left;
@@ -40,14 +38,7 @@ main {
 
     #email-box {
         margin-bottom: .2em;
-    }
-
-    .list-name:hover, .list-nav img, .js-top-50-viral, .js-click-list {
-        cursor:pointer;
-    }
-    .pointer:hover {
-        cursor:pointer;
-    }
+    }    
 }
 
 /* end desktop styling */
@@ -279,11 +270,11 @@ input {
 }
 
 .submit-button {
-    border: 1px #ee7c61;
+    border: 1px #e23610;
     border-radius: 15px;
     width: 100%;
     color: white;   
-    background-color: #ee7c61;
+    background-color: #e23610;
     font-size: 1em;
     padding: .2em;
 }
@@ -293,11 +284,13 @@ input {
 }
 
 .js-signUp {
-    color: #ee7c61;
     text-align: center;
     cursor: pointer;
+    
 }
-
+.js-signUp span {
+    text-decoration: underline;
+}
 .js-container {
     display: block;
     margin-left: auto;
@@ -387,4 +380,18 @@ ul li {
 
 legend {
     text-align: center;
+}
+.hover:hover {
+    cursor: pointer;
+}
+
+.js-signUp:hover, 
+.delete-x:hover, 
+.list-name:hover, 
+.list-nav img:hover, 
+.js-top-50-viral:hover, 
+.js-click-list:hover, 
+.submit-button:hover {
+    cursor:pointer;
+    filter: contrast(200%);
 }
