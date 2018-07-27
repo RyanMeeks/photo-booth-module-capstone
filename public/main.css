@@ -12,7 +12,9 @@ main {
         top: .1em;
         color: white;
     }
-
+    .hover:hover {
+        cursor:pointer;
+    }
     img#logo {
         display: inline-block;
         float: left;
@@ -45,9 +47,6 @@ main {
     }
     .pointer:hover {
         cursor:pointer;
-    }
-    input[type=text]:focus {
-        border-radius: 40px;
     }
 }
 
