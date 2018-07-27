@@ -12,45 +12,44 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 </head>
 <body>
-    <header>
+    <header role="banner">
+        <div class="row">
+            <div class="col-12 pre-nav"></div>
+        </div>
+        <div class="row nav-wrapper">
+            <nav role="navigation" class="list-nav">
+                <img src="https://www.shareicon.net/data/2015/12/02/681384_button_512x512.png" width="30px" height="30px" style="filter: invert(100%)">                    
+                <div class="list-heading">Playlists</div>
+                    <ul class="ul-lists">
+                    </ul>      
+            </nav>
+        </div>
+        <div>
+            <ul class="row charts-nav"></ul>
+        </div>
+    </header>
+    <div class="invisible">
         <div class="row">
             <div class="col-12 pre-nav">
             </div>
         </div>
         <div class="row nav-wrapper">
             <nav role="nav" class="list-nav">
-                    <img src="https://www.shareicon.net/data/2015/12/02/681384_button_512x512.png" width="30px" height="30px" style="filter: invert(100%)">                    <div class="list-heading">Playlists
-                    </div>
-                        <ul class="ul-lists">
-                         </ul>      
-                </nav>
+                <img src="https://www.shareicon.net/data/2015/12/02/681384_button_512x512.png" width="30px" height="30px" style="filter: invert(100%)">                    <div class="list-heading">Playlists
+                <ul class="ul-lists"></ul>      
+            </nav>
         </div>
-        <div>
-            <ul class="charts-nav"></ul>
-        </div>
-    </header>
-    <div class="invisible">
-        <div class="row">
-                <div class="col-12 pre-nav">
-                </div>
-            </div>
-            <div class="row nav-wrapper">
-                    <nav role="nav" class="list-nav">
-                        <img src="https://www.shareicon.net/data/2015/12/02/681384_button_512x512.png" width="30px" height="30px" style="filter: invert(100%)">                    <div class="list-heading">Playlists
-                            <ul class="ul-lists">
-                            </ul>      
-                    </nav>
-            </div>
             <div>
-                <ul class="charts-nav"></ul>
+                <ul class="row charts-nav"></ul>
             </div>    
     </div>
     <main role="main" arria-live="assertive">
+    <div class="row">
         <div class="col-12 main">
             <div class="js-container"></div>
         </div>
-            <script src="app.js" type="application/javascript"></script>
+    </div>
+    <script src="app.js" type="application/javascript"></script>
     </main>
-    <footer></footer>
 </body>
 </html>

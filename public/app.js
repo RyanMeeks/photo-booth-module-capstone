@@ -3,67 +3,7 @@
 
 const USERLOGIN_URL = "/api/auth/login";
 const USERSIGNUP_URL = "/api/users";
-let authToken;
-
-let musicListTemplate = (
-    '<div class="list js-list">' +
-      '<h3 class="js-list-name"><h3>' +
-      '<hr>' +
-      '<ul class="js-list-songs">' +
-      '</ul>' +
-      '<div class="list-controls">' +
-        '<button class="js-list-delete">' +
-          '<span class="button-label">delete</span>' +
-        '</button>' +
-      '</div>' +
-    '</div>'
-  );
-  
-const PHOTO_BOOTH_TEMPLATE_DATA = {
-    "stripTemplates":[
-    {
-        "template_name":"flowers",
-        "image":"image data from base 64?",
-        "tags":["christmas", "new years eve", "mitzvah", "wedding"],
-        "orientation": "vertical",
-        "images": "4"
-    },
-    
-    {
-        "templateName":"Fancy and Fun",
-        "image":"image data from base 64?",
-        "tags":["christmas", "new years eve", "mitzvah", "wedding"],
-        "orientation": "vertical",
-        "images": "4"
-    }]
-}
-
-
-//----->START callback for photobooth data
-function getTemplateData(callbackFn) {
-
-	setTimeout(function(){callbackFn(PHOTO_BOOTH_TEMPLATE_DATA)}, 1);
-}
-
-// this function stays the same when we connect
-// to real API later
-function displayTemplateSelections(data) {
-    console.log("this works")
-    for (let i = 0; i < data.stripTemplates.length; i++) {
-        console.log("inside")
-	   $('body').append(
-        '<p>' + data.stripTemplates[i].image + '</p>');
-    }
-}
-
-// this function can stay the same even when we
-// are connecting to real API
-function getAndDisplayTemplateInfo() {
-	getTemplateData(displayTemplateSelections);
-}
-//--->END Callback for Photo Booth Data
-
-//Page Load
+let authToken//Page Load
 //$(getAndDisplayTemplateInfo)
 $(userLogin)
 
@@ -71,8 +11,8 @@ function userLogin() {
     $('header').hide();
     $('.invisible').hide();
     $('.js-container').html(
-        `
-        <img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        `<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        <div class="intro-container">
         <div id="intro-page">
             <div id="welcome">Log in to Record Crate</div>
             <p id="para-welcome">A fun way to create and manage custom playlists with your favorite tracks!</p>
@@ -95,8 +35,9 @@ function userLogin() {
         </form>
         <div class="login-footer">
             <div class="js-signUp">
-                <p>Sign up for Record Crate</p>
+                <span>Sign Up For Record Crate</span>
             </div>
+        </div>
         </div>`
         );
     watchSubmit();
@@ -130,7 +71,7 @@ function watchSignUpClick() {
         </form>
         <div class="login-footer">
                 <div class="js-signUp">
-                    <p>Already signed up?</p>
+                    <span>Already signed up?</span>
                 </div>
             </div>`
         );
@@ -164,24 +105,23 @@ function loginEndpoint(username, password, callback) {
         type: 'POST',
         success: callback, 
         error: function(err) {
-            console.log('Input Error');
+            console.log(err);
         }
     };
     $.ajax(settings);
-    console.log(settings);
+    
 }
 
 function top50APIClick() {
     $('.js-top-50-viral').click(event => {
         $.ajax({
             url: 'http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=e1c8f246d4e4f0fb0e69b6f45b52c728&format=json',
-            success: function(data){
+            success: function(data) {
                 displayTop50API(data);
             }
             });
         });
 }
-
 function displayTop50API(data) {
     const top50ListArray = data.tracks.track;
     console.log(top50ListArray);
@@ -205,10 +145,8 @@ function displayTop50API(data) {
         if (customList.length >= 1) {
         $(".top-50-row").hide();
         let top50Request = $(this).attr('value');
-        console.log(top50Request);
-        $('#song-requests-table').empty();
+        $('#song-requests-table').html(`<div>Select a List to Add <span id="top-50-song-request">${top50Request}</span><div>`);
         $('.user-list').remove();
-        $('#chart-title').html(`Select a List to Add ${top50Request}`);
         top50APIAddToList(top50Request);
         }
         else {
@@ -225,7 +163,11 @@ function top50APIAddToList(data) {
     console.log(artist, title);
     customList.forEach((list)=> {
         $('#song-requests-table').append(`
-        <button class="list-name" value="${list}" id="${list}">${list}</button>`);    
+        <tr>
+        <th>
+        <button class="list-name" value="${list}" id="${list}">${list}</button>
+        </th>
+        </tr>`);
     });
 
     $('#song-requests-table').on("click", "button", function() {
@@ -266,12 +208,10 @@ function displayDataFromLoginApi(data) {
     $('.invisible').show();
     $(".ul-lists").hide();
     $('.charts-nav').html(`
-    <div class="list-heading">Charts</div>
+    <div class="list-heading">Chart</div>
         <li class="js-top-50-viral">Top 50 Viral</li>
-        <li class="js-top-50-wedding">Top 50 Wedding</li>
 `);
 $(".main").addClass("border-top-bottom");
-
 createAListScreen();
 showListNav(); 
 getUserMusicLists();
@@ -280,25 +220,26 @@ top50APIClick();
 }
 
 function createAListScreen() {
-
     $('.js-container').html(`
     <div class="js-user-lists"></div>
         <div class="list-request-container">
             <div class="create-a-list"><span>Create A List</span></div>
                 <form id="js-song-list-form">
-                    <label for="list-entry" style="display:none">Enter List Name</label>                    <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
+                    <label for="list-entry" style="display:none">Enter List Name</label>
+                    <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
                     <button class="submit-button" type="submit">Submit</button>
                 </form>
         </div>`)
+        hideListsOnInputTouch();
 }
 //toggles for nav
 function showListNav() {
     $(".list-nav").click(event => {
         if (customList.length > 0) {
             $(".ul-lists").show();
-            $('.list-nav').addClass('overflow')
-            $('.charts-nav').hide();
+            $('.list-nav').addClass('overflow')            
         }
+        
         else {
             alert("You Need to Create a List First!");
             showListNav();
@@ -315,7 +256,6 @@ function hideListNav() {
         $('.charts-nav').show();
     });
 }
-
 function deleteList(data) {
     $('#delete').click(event => {
         let retValue = confirm("Are you sure you want to delete this list?");
@@ -360,7 +300,7 @@ function watchForListSubmit() {
         let listNameInput = $('#js-new-music-list').val();
         let listName = correctCase(listNameInput);
         $('#js-new-music-list').val('');
-        
+        $('.charts-nav').show();
         $.ajax({
             url: '/music-list/',
             data: JSON.stringify({listName:listName}),
@@ -392,21 +332,20 @@ function displaySuccessListCreation(listData) {
 
 function displayNewListBlank(data) {    
     let newListMusic = "";
-    populateList(newListMusic, data)
+    populateList(newListMusic, data);
+
    $('#create-new-list').click(function() {
     addAListPage();
     });
 
-deleteList(data);
-songSubmit(data);
+    deleteList(data);
+    songSubmit(data);
 }
 //changed here
 function watchListSelect() {
-    
     $('.list-nav').on('click', 'li', function(event) {
-
         let listName = $(this).closest('li').attr('value');
-        console.log(listName)
+
         $.ajax({
             url: `/music-list/${listName}`,
             method: 'GET',
@@ -421,33 +360,27 @@ function watchListSelect() {
 
 function deleteSong() {
     $('#song-requests-table').on('click', '.remove' ,function(event) {
-        console.log('clickworks');
         let id = $(this).closest('tr').attr('id')
-        console.log(id);
         $.ajax({
             url: `/${id}`,
             method: 'DELETE',
             headers: {Authorization: "Bearer " + authToken}, 
         });
+
         $(this).closest('tr').hide();
     })
 };
 
-function addRequestToList(data) {
 
-}
 let thisListOfMusic;
 function displayListAPI(data) {
     let newList;
     let reverseOrder = function(data) {
     for (let i = data.songs.length + 1; i < data.songs.length; i--) {
         newList.push([i]);
-        console.log(newList)
     }
     return newList;
 }
-
-console.log(reverseOrder);
 
     thisListOfMusic = data.songs.map(songs => 
         `<tr id="${songs._id}">
@@ -455,7 +388,8 @@ console.log(reverseOrder);
             <th class="title-name" value="${songs.title}">${songs.title}</th> 
             <th class="remove" value="${songs.artist}, ${songs.title}"><img src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
         </tr>
-    `); 
+    `);
+    
     let newListMusic = thisListOfMusic.reverse().join('\n\t');
     populateList(newListMusic, data.listName);
     songSubmit(data.listName);
@@ -493,6 +427,14 @@ function populateList(newListMusic, data) {
     </div>`);
 }
 
+function hideListsOnInputTouch() {
+    $('input').focusin(function() {
+        $(".ul-lists").hide();
+        $('.list-nav').removeClass('overflow');
+        showListNav();
+      });
+}
+
 function songSubmit(data) {
     let listPassThrough = data;
     console.log(listPassThrough);
@@ -504,7 +446,6 @@ function songSubmit(data) {
         title = correctCase(title);
         $('#js-title-entry').val('');
         $('#js-artist-entry').val('');
-        
         $.ajax({
             url:`/music-list/${data}`,
             method: 'POST',
@@ -528,6 +469,7 @@ function songSubmit(data) {
             }
             });
      });
+     
 }
 
 function getUserMusicLists(data){
@@ -582,14 +524,5 @@ function displayDataFromSignUpApi (username) {
     $('.js-signIn').click(event => {
         userLogin();
     })
-
 }
-
-
-//menu on mobile
-
-
-
-//Click New User Button On Initial Screen
-
 

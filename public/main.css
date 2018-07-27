@@ -5,11 +5,65 @@
 main {
     width: 100%;
 }
+
+@media all and (min-width: 768px) {
+    #user-title {
+        font-size: 2.7em;
+        top: .1em;
+        color: white;
+    }
+
+    img#logo {
+        display: inline-block;
+        float: left;
+        margin-top: -5em;
+    }
+
+    .intro-container {
+        margin-top: 5em;
+    }
+
+    #usersignup {
+        width: 75%;
+        margin: auto;
+    }
+
+    #para-welcome {
+        text-align: center;
+    }
+
+    #password-box {
+        margin-bottom: .4em;
+    }
+
+    #email-box {
+        margin-bottom: .2em;
+    }
+
+    .list-name:hover, .list-nav img, .js-top-50-viral, .js-click-list {
+        cursor:pointer;
+    }
+    .pointer:hover {
+        cursor:pointer;
+    }
+    input[type=text]:focus {
+        border-radius: 40px;
+    }
+}
+
+/* end desktop styling */
+
+th button {
+    width: 100%;
+    background: none;
+    color: black;
+}
+
 nav img {
     float: left;
     margin: .5em;
 }
-/* header navigation styling */
+
 .invisible {
     visibility: hidden;
     top: 0;
@@ -23,11 +77,6 @@ nav img {
 .list-name {
     border-bottom: 2px white solid;
     padding: 5px;
-    color: white;
-}
-
-.list-nav img {
-    color: white;
 }
 
 li:last-child {
@@ -38,19 +87,23 @@ li:last-child {
     padding: 0;
     margin-top: 0px;
     margin-bottom: 0px;
+    color: white;
 }
+
 #welcome {
     font-size: 1em;
 }
+
 #para-welcome {
     font-size: .75em;
 }
+
 #logo-small {
     height: 7em;
     position: absolute;
     left: .2em;
-
 }
+
 .nav-wrapper  {
     padding-left: 0px;
     padding-right: 0px;
@@ -58,16 +111,20 @@ li:last-child {
     margin-top: 2em;
     overflow-y:scroll;
 }
+
 .list-nav {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
+
 .overflow {
     overflow-y: scroll;
     height: 15em;
 }
+
 /* Table Styling */
+
 tr:nth-child(even) {
     background: #ee7c61;
     color: white;
@@ -81,6 +138,24 @@ table {
     border-collapse: collapse;
 }
 
+/* table border radius */
+
+table tr:last-child th:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+table tr:last-child th:last-child {
+    border-bottom-right-radius: 10px;
+}
+table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+/* End Table Styling */
 
 header {
     position: fixed;
@@ -104,47 +179,24 @@ header {
     left: 150px;
 }
 
-
 #logo-banner {
     display: inline-block;
 }
 
-
-
-
-/* navigation styling */
-
-.you-are-here {
-    font-weight: 1200;
-    color: white;
-}
 .list-name {
     list-style: none;
     font-weight: 900;
     font-size: 1.5em;
 }
-/* end nav styling */
+
 .list-container {
     background: #ee7c61;
     border-radius: 10px;
     border: 2px solid white;
-    color: white
 }
 
-/* table border radius */
-table tr:last-child th:first-child {
-    border-bottom-left-radius: 10px;
-}
-
-table tr:last-child th:last-child {
-    border-bottom-right-radius: 10px;
-}
-table tr:first-child th:first-child {
-    border-top-left-radius: 10px;
-}
-
-table tr:first-child th:last-child {
-    border-top-right-radius: 10px;
+div.list-add-song {
+    color: white;
 }
 
 #song-requests-table {
@@ -167,14 +219,17 @@ table tr:first-child th:last-child {
 #welcome {
     text-align: center;
 }
+
 #para-welcome {
     text-align: left;
 }
+
 #intro-page {
     margin-left: 20px;
     margin-right: 20px;
     text-align: center;
 }
+
 input {
     border-radius: 15px;
     width: 100%;
@@ -183,6 +238,7 @@ input {
     margin-bottom: 5px;
     font-size: .75em;
 }
+
 #js-new-music-list {
     margin-bottom: .5em;
 }
@@ -193,6 +249,7 @@ input {
     border-top: white solid 2px;
     border-bottom: white solid 2px;
 }
+
 .create-a-list {
     margin: .7em 0 .3em 0;
 }
@@ -211,6 +268,7 @@ input {
     height: 3em;
     font-size: 18px;
 }
+
 #create-new-list {
     background: green;
     color: white;
@@ -220,6 +278,7 @@ input {
     height: 3em;
     font-size: 18px;
 }
+
 .submit-button {
     border: 1px #ee7c61;
     border-radius: 15px;
@@ -229,17 +288,16 @@ input {
     font-size: 1em;
     padding: .2em;
 }
+
 #password, #email {
     display:none;
 }
 
 .js-signUp {
     color: #ee7c61;
-    text-align: left;
+    text-align: center;
     cursor: pointer;
 }
-
-
 
 .js-container {
     display: block;
@@ -256,10 +314,12 @@ input {
 body {
     background: #FFC3B4;
 }
+
 #usersignup {
     text-align: center;
     padding: 5px;
 }
+
 nav h2 {
     font-size: 2.5em;
     -webkit-margin-before: 0px;
@@ -275,8 +335,11 @@ ul, menu, dir {
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
 }
+
 ul.charts-nav {
     -webkit-padding-start: 0px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .charts-nav {
@@ -286,6 +349,7 @@ ul.charts-nav {
     width: 100%;
     background-color: #FF8568;
 }
+
 .list-heading {
     font-size: 2em;
     color: white;
@@ -309,6 +373,7 @@ ul.charts-nav {
     -webkit-padding-start: 40px;
     border-top: white 2px solid;
 }
+
 ul li {
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
