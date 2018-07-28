@@ -208,7 +208,6 @@ function displayDataFromLoginApi(data) {
     $('.invisible').show();
     $(".ul-lists").hide();
     $('.charts-nav').html(`
-    <div class="list-heading">Chart</div>
         <li class="js-top-50-viral">Top 50 Viral</li>
 `);
 $(".main").addClass("border-top-bottom");
@@ -225,7 +224,7 @@ function createAListScreen() {
         <div class="list-request-container">
             <div class="create-a-list"><span>Create A List</span></div>
                 <form id="js-song-list-form">
-                    <label for="list-entry" style="display:none">Enter List Name</label>
+                    <label for="list-entry" aria-labelledby="list-entry" value="list" style="display:none">Enter List Name</label>
                     <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
                     <button class="submit-button" type="submit">Submit</button>
                 </form>
@@ -386,7 +385,7 @@ function displayListAPI(data) {
         `<tr id="${songs._id}">
             <th class="artist-name" value="${songs.artist}">${songs.artist}</th>
             <th class="title-name" value="${songs.title}">${songs.title}</th> 
-            <th class="remove" value="${songs.artist}, ${songs.title}"><img class="delete-x" src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" width="20px" height="20px"></th>
+            <th class="remove" value="${songs.artist}, ${songs.title}"><img class="delete-x" src="https://cdn0.iconfinder.com/data/icons/pixon-1/24/circle_close_delete_exit_remove_x_outline-512.png" alt="delete-image" width="20px" height="20px"></th>
         </tr>
     `);
     
@@ -411,10 +410,10 @@ function populateList(newListMusic, data) {
     </div>
     <div class="request-form-container">
             <form id="js-song-request-form">
-                <label for="artist-entry" style="display:none">Enter Artist</label>
-                <input type="text" name="artist-entry" id="js-artist-entry" placeholder="ARTIST">
-                <label for="title-entry" style="display:none">Enter Title</label>
-                <input type="text" name="title-entry" id="js-title-entry" placeholder="TITLE">
+                <label for="artist-entry" value="artist" style="display:none">Enter Artist</label>
+                <input type="text" aria-labelledby="artist" name="artist" id="js-artist-entry" placeholder="ARTIST">
+                <label for="title-entry" value="title" style="display:none">Enter Title</label>
+                <input type="text" name="title" id="js-title-entry" aria-labelledby="title" placeholder="TITLE">
                 <button type="submit" class="submit-button">Add Song!</button>
             </form>
     </div>

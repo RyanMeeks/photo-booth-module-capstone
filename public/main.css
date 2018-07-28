@@ -97,7 +97,7 @@ li:last-child {
 .nav-wrapper  {
     padding-left: 0px;
     padding-right: 0px;
-    background: #FF8568;
+    background: #e23610;
     margin-top: 2em;
     overflow-y:scroll;
 }
@@ -180,7 +180,7 @@ header {
 }
 
 .list-container {
-    background: #ee7c61;
+    background: #e23610;
     border-radius: 10px;
     border: 2px solid white;
 }
@@ -339,7 +339,7 @@ ul.charts-nav {
     list-style: none;
     font-size: 1em;
     width: 100%;
-    background-color: #FF8568;
+    background-color: #e23610;
 }
 
 .list-heading {
@@ -349,6 +349,7 @@ ul.charts-nav {
 
 .js-top-50-viral {
     font-size: 1.5em;
+    text-align: right;
     color:white;
 }
 
