@@ -95,55 +95,88 @@ app.get('/music-list/:listName', jwtAuth, (req, res) => {
 app.post('/music-list/:listName', jwtAuth, (req, res) => {
     let {listName, artist, title, position, chart} = req.params;
     MusicList.findOne({listName}).then((NewList) => {
-        let request = new Song({
-            position: 0,
-            chart: "",
-            artist: req.body.artist,
-            title: req.body.title,
-            username: req.user.username
-        });
-        request.save().then((song) =>{
-            if (!NewList.songs) {
-                NewList.songs = [];
-            }
-            NewList.songs.push(song);
-            return NewList.save();
-        })
-        .then((list) => {
-            return list.populate("songs").execPopulate();
-        })
-        .then((list) => {
-            res.send(list)
-        })
-        .catch((errors) => {
-            console.log(errors)
-        })
+       let songRequest = {
+           position: 0,
+           chart: '',
+           artist: req.body.artist,
+           title: req.body.title,
+           username: req.user.username
+       }
+        Song.findOne({
+            artist:songRequest.artist, title: songRequest.title,
+            username: songRequest.username
+            })
+            .then((currentSong) => {
+                console.log(currentSong)
+                if (currentSong != null) {
+                    return res.status(422).send("errors")
+                }
+                let request = new Song({
+                position: 0,
+                chart: "",
+                artist: req.body.artist,
+                title: req.body.title,
+                username: req.user.username
+                });
+        
+                request.save().then((song) => {
+                    NewList.songs.push(song);
+                    return NewList.save();
+                })
+                .then((list) => {
+                    return list.populate("songs").execPopulate();
+                })
+                .then((list) => {
+                    res.send(list)
+                }).catch((errors) => {
+                    console.info(errors.errors.title.message);
+                });
+            });
     });
 });
 
  // user POSTS a list to /music-list
  app.post('/music-list', jwtAuth, (req, res) => {
-    let musicList = new MusicList ({
+    const inputList = {
         listName: req.body.listName.trim(),
-        songs: [],
-        username: req.user.username,
-    })
-    
-    musicList.save().then((doc) => {
-        
-        return doc.save();
-    }, (errors) => {
-        res.status(400).send(errors);
-    })
-    .then((list)=> {
-        return list.populate("musiclists").execPopulate();
-    })
-    .then((list) => {
-        res.send(list)
-    })
-    .catch((e)=> {console.log(errors)})
-});
+        songs:[],
+        username: req.user.username
+    }
 
+    MusicList.findOne({listName:inputList.listName}).then((doc)=> {
+        if (doc === null) {
+            let musicList = new MusicList ({
+                listName: inputList.listName,
+                songs:[],
+                username: inputList.username
+            }, (error) => {
+                res.status(400).send(error);
+            })
+    //return an object... if it finds, return error, otherwise, go through.. res.send..
+            musicList.save().then((doc) => {
+                
+                return doc.save();
+            }, (errors) => {
+                res.status(400).send(errors);
+            })
+            .then((list)=> {
+                return list.populate("musiclists").execPopulate();
+            })
+            .then((list) => {
+                res.send(list)
+                
+            })
+            .catch((e) => {
+                console.log(e)
+            });
+        }
+        else {
+            res.status(422).send("List Exists")
+        }
+    }).catch((e)=>{
+        res.send(e)
+    });
+});
 //User Views Top Charts GET request
 app.get('/topcharts', jwtAuth, (req, res) => {
     MusicChart.find().then((list) => {
