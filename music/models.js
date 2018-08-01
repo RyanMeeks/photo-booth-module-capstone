@@ -7,8 +7,8 @@ const {User} = require('../users/models');
 const songSchema = mongoose.Schema({
     position: {type: Number, required: false},
     chart: String,
-    artist: String,
-    title: String,
+    artist: {type: String, required: true},
+    title: {type: String, required: true},
     username: {type: String, ref: 'User'}
 });
 
