@@ -23,11 +23,11 @@ function userLogin() {
                 <div id="usersignup">
                     <div id="email-box">
                         <label id="email" for="email" value="email">Email</label>
-                        <input id="js-userNameLogin" name="email" aria-labelledby="email" type="text" placeholder="email, phone or username"/>
+                        <input id="js-userNameLogin" name="email" aria-labelledby="email" type="text" placeholder="email, phone or username" required/>
                     </div>
                     <div id="password-box">
                         <label id="password" for="password" value="password">Password</label>
-                        <input id="js-passwordLogin" aria-labelledby="password" name="password" type="text" placeholder="password"/> 
+                        <input id="js-passwordLogin" aria-labelledby="password" name="password" type="text" placeholder="password" required/> 
                     </div>
                     <button class="submit-button" type="submit" value="submit">Submit</button>
                 </div>
@@ -129,7 +129,7 @@ function displayTop50API(data) {
     `<tr class="top-50-row">
             <th>${song.artist.name}</th>
             <th>${song.name}</th> 
-            <th><img class="js-click-list" value="${song.artist.name}-${song.name}" src="https://cdn0.iconfinder.com/data/icons/feather/96/circle-add-512.png" width="20px" height="20px"></th>
+            <th><img class="js-click-list" value="${song.artist.name}-${song.name}" src="https://cdn0.iconfinder.com/data/icons/feather/96/circle-add-512.png" width="20px" height="20px" alt="delete-button"></th>
         </tr>`
     );
 
@@ -160,12 +160,11 @@ function top50APIAddToList(data) {
     let newRequest = data.split("-");
     let artist = newRequest[0];
     let title = newRequest[1];
-    console.log(artist, title);
     customList.forEach((list)=> {
         $('#song-requests-table').append(`
         <tr>
         <th>
-        <button class="list-name" value="${list}" id="${list}">${list}</button>
+        <button class="list-name ${list}" value="${list}">${list}</button>
         </th>
         </tr>`);
     });
@@ -180,7 +179,13 @@ function top50APIAddToList(data) {
             data: JSON.stringify({artist:artist, title: title}),
             dataType: 'json',
             contentType: 'application/json',
-        }).done(alert(`Sucessfully added your request to ${listSelection}`)).then(
+            success: function(){
+                alert(`Sucessfully added your request to ${listSelection}`)
+            },
+            error: function(){
+                alert(`${artist} - ${title} is already requested in your database. Please select another song!`)
+            }
+        }).then(
             $.ajax({
             url: 'http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=e1c8f246d4e4f0fb0e69b6f45b52c728&format=json',
             success: function(data){
@@ -196,10 +201,10 @@ function displayUserLists(data){
     customList = data.lists.map(list => list.listName);
     $(".ul-lists").empty();
     customList.forEach((list)=> {
-        $(".ul-lists").append(`<li class="list-name" value="${list}" id="${list}">${list}</li>`);
+        $(".ul-lists").append(`<li class="${list} list-name" value="${list}">${list}</li>`);
     });
-        $('header .col-12').html('<img id="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div id="user-title">Record Crate</div>'); 
-        $('.invisible .col-12').html('<img id="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div id="user-title">Record Crate</div>');
+        $('header .col-12').html('<img class="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div class="user-title">Record Crate</div>'); 
+        $('.invisible .col-12').html('<img class="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div class="user-title">Record Crate</div>');
 };
 
 function displayDataFromLoginApi(data) {
@@ -224,8 +229,8 @@ function createAListScreen() {
         <div class="list-request-container">
             <div class="create-a-list"><span>Create A List</span></div>
                 <form id="js-song-list-form">
-                    <label for="list-entry" aria-labelledby="list-entry" value="list" style="display:none">Enter List Name</label>
-                    <input type="text" name="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
+                    
+                    <input type="text" name="list-entry" aria-label="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
                     <button class="submit-button" type="submit">Submit</button>
                 </form>
         </div>`)
@@ -308,7 +313,11 @@ function watchForListSubmit() {
             contentType: "application/json",
             success: function () {
                 displaySuccessListCreation(listName);
+            },
+            error: function() {
+                alert("List Already Exists!")
             }
+            
         });
     });
     
@@ -410,10 +419,8 @@ function populateList(newListMusic, data) {
     </div>
     <div class="request-form-container">
             <form id="js-song-request-form">
-                <label for="artist-entry" value="artist" style="display:none">Enter Artist</label>
-                <input type="text" aria-labelledby="artist" name="artist" id="js-artist-entry" placeholder="ARTIST">
-                <label for="title-entry" value="title" style="display:none">Enter Title</label>
-                <input type="text" name="title" id="js-title-entry" aria-labelledby="title" placeholder="TITLE">
+                <input type="text" name="artist-entry" id="js-artist-entry" aria-label="artist" placeholder="ARTIST" required>
+                <input type="text" name="title-entry" id="js-title-entry" aria-label="title" placeholder="TITLE" required>
                 <button type="submit" class="submit-button">Add Song!</button>
             </form>
     </div>
@@ -453,18 +460,18 @@ function songSubmit(data) {
             dataType: 'json',
             contentType: 'application/json',
             success: function() {
-                alert("success! Song Added!");
+                alert("Success! Song Added!");
                 $.ajax({
                     url: `/music-list/${listPassThrough}`,
                     method: 'GET',
                     contentType: 'String',
-                    headers: {"Authorization": "Bearer " + authToken}
+                    headers: {"Authorization": "Bearer " + authToken},
                 }).done(function(data){
                     displayListAPI(data);
                 });
             },
-            error: function() {
-                console.log("Error Posting");
+            error: function(errors) {
+                alert("Song Already In This List or Another List!")
             }
             });
      });
