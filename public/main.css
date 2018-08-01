@@ -5,16 +5,22 @@
 main {
     width: 100%;
 }
-
+@media all and (min-width: 1000px) {
+    .logo-small {
+        margin-left: .5em;
+    }
+}
 @media all and (min-width: 768px) {
-    #user-title {
+    .user-title {
         font-size: 2.7em;
         top: .1em;
         color: white;
     }
+    .logo-small {
+        margin-left: 2em;
+    }
     
     img#logo {
-        display: inline-block;
         float: left;
         margin-top: -5em;
     }
@@ -88,7 +94,7 @@ li:last-child {
     font-size: .75em;
 }
 
-#logo-small {
+.logo-small {
     height: 7em;
     position: absolute;
     left: .2em;
@@ -117,7 +123,7 @@ li:last-child {
 
 tr:nth-child(even) {
     background: #ee7c61;
-    color: white;
+    color: black;
 }
 
 tr:nth-child(odd) {
@@ -157,14 +163,12 @@ header {
     padding-bottom: .2em;
 }
 
-#user-title {
+.user-title {
     float: right;
     font-weight: 900;
     color: black;
     font-size: 2em;
     margin: .9em 0 0 0;
-}
-#user-title {
     top:30px;
     left: 150px;
 }
@@ -249,9 +253,9 @@ input {
 }
 
 #delete {
-    background: #ff0000;
+    background: #770101;
     color: white;
-    font-weight: lighter;
+    font-weight: 800;
     margin-bottom: .5em;
     border-radius: 5px;
     width: 50%;
@@ -267,6 +271,7 @@ input {
     width: 50%;
     height: 3em;
     font-size: 18px;
+    font-weight: 800;
 }
 
 .submit-button {
@@ -279,7 +284,7 @@ input {
     padding: .2em;
 }
 
-#password, #email {
+#password, #email, #artist-entry, #title-entry  {
     display:none;
 }
 
