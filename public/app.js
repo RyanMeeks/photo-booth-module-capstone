@@ -1,10 +1,8 @@
 'use strict';
-/// api to suggest similar songs http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=cher&track=believe&api_key=e1c8f246d4e4f0fb0e69b6f45b52c728&format=json
 
 const USERLOGIN_URL = "/api/auth/login";
 const USERSIGNUP_URL = "/api/users";
-let authToken//Page Load
-//$(getAndDisplayTemplateInfo)
+let authToken
 $(userLogin)
 
 function userLogin() {
@@ -109,13 +107,12 @@ function loginEndpoint(username, password, callback) {
         }
     };
     $.ajax(settings);
-    
 }
 
 function top50APIClick() {
     $('.js-top-50-viral').click(event => {
         $.ajax({
-            url: 'http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=e1c8f246d4e4f0fb0e69b6f45b52c728&format=json',
+            url: 'https://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=e1c8f246d4e4f0fb0e69b6f45b52c728&format=json',
             success: function(data) {
                 displayTop50API(data);
             }
