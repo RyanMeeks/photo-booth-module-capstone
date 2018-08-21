@@ -20,10 +20,18 @@ const localAuth = passport.authenticate('local', {session: false});
 router.use(bodyParser.json());
 //User providees a email/passwrod to login
 
-router.post('/login', localAuth, (req, res) => {
-    const authToken = createAuthToken(req.user.serialize());
-    res.json({authToken});
-});
+router.post('/login', (req, res, next) => { 
+    passport.authenticate('local', (error, user, info) => {
+        if (error) {
+            return res.json(error)
+        }
+        if (!user) {
+            return res.status(401).json({message: info.message})
+        }
+            const authToken = createAuthToken(user.serialize());
+            res.json({authToken});
+    })(req, res, next)
+    });
 
 const jwtAuth = passport.authenticate('jwt', {session: false});
 
