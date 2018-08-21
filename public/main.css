@@ -2,50 +2,27 @@
     box-sizing: border-box;
     font-family: 'Nunito', sans-serif;
 }
+.record-crate-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
 main {
-    width: 100%;
+        display: flex;
 }
-@media all and (min-width: 1000px) {
-    .logo-small {
-        margin-left: .5em;
-    }
-}
-@media all and (min-width: 768px) {
-    .user-title {
-        font-size: 2.7em;
-        top: .1em;
-        color: white;
-    }
-    .logo-small {
-        margin-left: 2em;
-    }
-    
-    img#logo {
-        float: left;
-        margin-top: -5em;
-    }
 
+ @media only screen and (min-width: 768px) {
+    .js-container {
+        display: flex;
+    }
     .intro-container {
-        margin-top: 5em;
+        margin-top: 6em;
     }
-
-    #usersignup {
-        width: 75%;
-        margin: auto;
+    #logo {
+        margin-top: 2em;
     }
-
-    #para-welcome {
-        text-align: center;
-    }
-
-    #password-box {
-        margin-bottom: .4em;
-    }
-
-    #email-box {
-        margin-bottom: .2em;
-    }    
-}
+} 
 
 /* end desktop styling */
 
@@ -96,7 +73,6 @@ li:last-child {
 
 .logo-small {
     height: 7em;
-    position: absolute;
     left: .2em;
 }
 
@@ -110,8 +86,6 @@ li:last-child {
 
 .list-nav {
     width: 100%;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .overflow {
@@ -162,9 +136,11 @@ header {
     width: 100%;
     padding-bottom: .2em;
 }
+.pre-nav {
+    display:flex;
+}
 
 .user-title {
-    float: right;
     font-weight: 900;
     color: black;
     font-size: 2em;
@@ -173,9 +149,9 @@ header {
     left: 150px;
 }
 
-#logo-banner {
+/* #logo-banner {
     display: inline-block;
-}
+} */
 
 .list-name {
     list-style: none;
@@ -203,11 +179,9 @@ div.list-add-song {
 }
 
 #logo {
-    display: block;
-    max-width: 50%;
-    max-height:50%;
-    margin-left: auto;
-    margin-right: auto;
+    
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #welcome {
@@ -219,8 +193,8 @@ div.list-add-song {
 }
 
 #intro-page {
-    margin-left: 20px;
-    margin-right: 20px;
+    /* margin-left: 20px;
+    margin-right: 20px; */
     text-align: center;
 }
 
@@ -297,10 +271,6 @@ input {
     text-decoration: underline;
 }
 .js-container {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
     font-family: 'Nunito', sans-serif;
     font-size: 1.5em;
     text-align: center;
@@ -327,7 +297,7 @@ nav h2 {
 }
 
 ul, menu, dir {
-    display: block;
+    /* display: block; */
     list-style-type: none;
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
@@ -335,8 +305,8 @@ ul, menu, dir {
 
 ul.charts-nav {
     -webkit-padding-start: 0px;
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: auto;
+    margin-right: auto; */
 }
 
 .charts-nav {
