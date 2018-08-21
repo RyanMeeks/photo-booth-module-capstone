@@ -9,7 +9,9 @@ function userLogin() {
     $('header').hide();
     $('.invisible').hide();
     $('.js-container').html(
-        `<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        `<div class=logo-container>
+            <img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        </div>
         <div class="intro-container">
             <div id="intro-page">
                 <div id="welcome">Log in to Record Crate</div>
@@ -40,12 +42,15 @@ function userLogin() {
         );
     watchSubmit();
     watchSignUpClick();
+    
 }
 
 function watchSignUpClick() {
     $('.js-signUp').click(event => {
         $('.js-container').html(
-        `<img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        `<div class="logo-container">
+            <img id="logo" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif">
+        </div>
         <div class="intro-container">
             <div id="intro-page">
                 <h1 id="welcome">Sign up for Record Crate</h1>
@@ -102,9 +107,15 @@ function loginEndpoint(username, password, callback) {
         contentType: 'application/json',
         type: 'POST',
         success: callback, 
-        error: function(err) {
-            console.log(err);
-        }
+        error: (error) => {
+            $('.intro-container').append(`
+            <div class="unknown-user">Username/Password Not Found - Please Retry</div>`)
+            $('#js-userNameLogin').focus(function() {
+                $('.unknown-user').empty();
+            })
+            }
+            
+        
     };
     $.ajax(settings);
 }
@@ -121,7 +132,6 @@ function top50APIClick() {
 }
 function displayTop50API(data) {
     const top50ListArray = data.tracks.track;
-    console.log(top50ListArray);
     let displayTop50Original = top50ListArray.map(song =>
     `<tr class="top-50-row">
             <th>${song.artist.name}</th>
@@ -168,7 +178,6 @@ function top50APIAddToList(data) {
 
     $('#song-requests-table').on("click", "button", function() {
         let listSelection = $(this).attr('id');
-        console.log(listSelection);
         $.ajax({
             url:`/music-list/${listSelection}`,
             method: 'POST',
@@ -200,8 +209,8 @@ function displayUserLists(data){
     customList.forEach((list)=> {
         $(".ul-lists").append(`<li class="${list} list-name" value="${list}">${list}</li>`);
     });
-        $('header .col-12').html('<img class="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div class="user-title">Record Crate</div>'); 
-        $('.invisible .col-12').html('<img class="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div class="user-title">Record Crate</div>');
+        $('header .pre-nav').html('<img class="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div class="user-title">Record Crate</div>'); 
+        $('.invisible .pre-nav').html('<img class="logo-small" alt="record box" src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif"><div class="user-title">Record Crate</div>');
 };
 
 function displayDataFromLoginApi(data) {
@@ -226,7 +235,6 @@ function createAListScreen() {
         <div class="list-request-container">
             <div class="create-a-list"><span>Create A List</span></div>
                 <form id="js-song-list-form">
-                    
                     <input type="text" name="list-entry" aria-label="list-entry" id="js-new-music-list" placeholder="e.g. Cocktail Music">
                     <button class="submit-button" type="submit">Submit</button>
                 </form>
@@ -509,20 +517,24 @@ function SignUpEndpoint(username, password, callback) {
         type: 'POST',
         success: callback,
         error: function (err) {
-            console.log('Input Error')
+            err
         }
     };
     $.ajax(settings);
-    console.log(settings);
 }
 
 function displayDataFromSignUpApi (username) {
     console.log('Display Data from sign up API Callback works');
     $('.js-container').html(`
-    <p>Welcome! Your username is ${username.username}.</p>
-    <fieldset style="border:none">
-    <button class="js-signIn" type="submit" value="submit">click here to login</button>
-    </fieldset>
+    <div class="welcome-logo-wrapper">
+        <img src="http://payload418.cargocollective.com/1/20/651977/10673238/bin.gif" alt="record crate logo">
+    </div>
+    <div class="intro-container">
+        <p>Welcome! Your username is ${username.username}.</p>
+        <fieldset style="border:none">
+            <button class="js-signIn submit-button" type="submit" value="submit">click here to login</button>
+        </fieldset>
+    </div>
     `);
     $('.js-signIn').click(event => {
         userLogin();
