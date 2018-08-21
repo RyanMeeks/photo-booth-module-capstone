@@ -44,31 +44,6 @@ app.get('/api/protected', jwtAuth, (req, res) => {
     });
 });
 
-//user POSTS a song to /music
-// app.post('/music', (req, res) => {
-//     let songRequest = new Song ({
-//         position: '',
-//         chart: '',
-//         title: req.body.title,
-//         artist: req.body.artist
-//     })
-//     songRequest.save().then((song) => {
-//         res.send(song);
-//     }, (errors) => {
-//         res.status(400).send(errors);
-//     });
-// });
-
-//user GETS single song requests
-// app.get('/music', (req, res) => {
-//     Song.find().then((songs)=> {
-//         res.send({songs});
-//     }, (e) => {
-//         res.status(400).send(e);
-//     });
-// });
-
-
 // user GETS all of their lists to display
 app.get('/music-list', jwtAuth, (req,res) => {
     MusicList.find({username: req.user.username}).then((lists) => {
@@ -107,10 +82,11 @@ app.post('/music-list/:listName', jwtAuth, (req, res) => {
             username: songRequest.username
             })
             .then((currentSong) => {
-                console.log(currentSong)
+                
                 if (currentSong != null) {
                     return res.status(422).send("errors")
                 }
+               
                 let request = new Song({
                 position: 0,
                 chart: "",
@@ -128,11 +104,9 @@ app.post('/music-list/:listName', jwtAuth, (req, res) => {
                 })
                 .then((list) => {
                     res.send(list)
-                }).catch((errors) => {
-                    console.info(errors.errors.title.message);
                 });
             });
-    });
+        });
 });
 
  // user POSTS a list to /music-list
@@ -236,8 +210,6 @@ function runServer(databaseUrl, port = PORT) {
     });
   }
   
-  // this function closes the server, and returns a promise. we'll
-  // use it in our integration tests later.
   function closeServer() {
     return mongoose.disconnect().then(() => {
       return new Promise((resolve, reject) => {
@@ -251,7 +223,6 @@ function runServer(databaseUrl, port = PORT) {
       });
     });
   }
-
 
 if (require.main === module) {
     app.listen(process.env.PORT || 8080, function() {
